@@ -1,0 +1,21 @@
+{
+	"name": "backend",
+	"version": "0.0.0",
+	"description": "A brief description of your project",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"dev": "DEBUG=backend:* nodemon server.js",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"bcrypt": "^5.1.1",
+		"debug": "^4.3.4",
+		"dotenv": "^16.3.1",
+		"express": "^4.18.2",
+		"jsonwebtoken": "^9.0.2",
+		"morgan": "^1.10.0",
+		"nodemon": "^3.0.1",
+		"pg": "^8.11.3"
+	}
+}
