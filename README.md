@@ -1,3 +1,3 @@
-# MERN-Stack Infrastructure
+# PERN-Stack Infrastructure
 
-Clone this repo to provide the starter code for a comprehensive MERN-Stack project including token-based authentication.
+Clone this repo to provide the starter code for a comprehensive PERN-Stack project including token-based authentication.
