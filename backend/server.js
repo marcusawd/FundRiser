@@ -1,6 +1,7 @@
 //* import -> require
 require("dotenv").config();
 require("./config/database");
+require("./utils/compoundScheduler");
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
