@@ -18,6 +18,11 @@ const createJWT = (user) => {
 
 const create = async (req, res) => {
 	const data = req.body;
+	const emailRegex =
+		/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+	if (!emailRegex.test(data.email)) {
+		return res.status(400).json({ error: "Invalid email format" });
+	}
 	const role = data.role ? data.role : "user";
 	const hashedPassword = await bcrypt.hash(data.password, 10);
 	const query = {
@@ -30,14 +35,7 @@ const create = async (req, res) => {
 		res.status(201).json({ token });
 	} catch (error) {
 		debug("error: ", error);
-		if (error.code === "23514" && error.constraint === "email_format_check") {
-			res
-				.status(400)
-				.json({ error: "Email does not match the required format." });
-		} else if (
-			error.code === "23505" &&
-			error.constraint === "users_email_key"
-		) {
+		if (error.code === "23505" && error.constraint === "users_email_key") {
 			res
 				.status(409)
 				.json({ error: "Email already exists. Please use a different email" });
