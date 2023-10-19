@@ -25,3 +25,7 @@ const tech = {
 	allocation_asset: ["QQQ", "VGT", "TSLA", "MSFT"],
 	percentage: [50, 20, 15, 15],
 };
+
+const must = {
+	testing: "testing",
+};
