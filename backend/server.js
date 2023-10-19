@@ -8,6 +8,7 @@ const logger = require("morgan");
 const debug = require("debug")("backend:server");
 
 const usersRouter = require("./routes/api/usersRoutes");
+const fundsRouter = require("./routes/api/fundsRoutes");
 const checkTokenMiddleware = require("./config/checkToken");
 
 //* app
@@ -22,6 +23,7 @@ app.use(checkTokenMiddleware);
 
 //* routes
 app.use("/api/users", usersRouter);
+app.use("/api/funds", fundsRouter);
 
 //? Catch all routes
 app.get("/*", (req, res) => {

@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS users (
 );
 CREATE TABLE investment_funds (
   fund_id SERIAL PRIMARY KEY,
-  fund_name VARCHAR(255) NOT NULL,
-  interest_rate DECIMAL(5, 2) NOT NULL,
-  last_updated_by VARCHAR(50) --admin name or id
+  fund_name VARCHAR(255) UNIQUE NOT NULL,
+  allocation_asset VARCHAR(255) [] NOT NULL,
+  percentage INT [] NOT NULL
 );
 CREATE TABLE user_investment (
   user_investment_id SERIAL PRIMARY KEY,

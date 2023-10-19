@@ -19,3 +19,9 @@ const createUserTable = async () => {
 };
 
 createUserTable();
+
+const tech = {
+	fund_name: "Tech",
+	allocation_asset: ["QQQ", "VGT", "TSLA", "MSFT"],
+	percentage: [50, 20, 15, 15],
+};

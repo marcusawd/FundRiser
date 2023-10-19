@@ -4,10 +4,11 @@ const debug = require("debug")("backend:compoundScheduler");
 function performCompounding() {
 	// Logic to retrieve user balances and perform the compounding process
 	// Example: calculateCompoundedAmount(lastCompoundedDate, lastDepositDate, currentBalance, newDeposits);
-	debug("Compounding process triggered for all users");
+	const date = new Date();
+	debug("Compounding.. ", date);
 }
 
 // Every 10 minutes
-const compoundJob = schedule.scheduleJob("* */10 * * * *", () => {
+const compoundJob = schedule.scheduleJob("*/1 * * * *", () => {
 	performCompounding();
 });
