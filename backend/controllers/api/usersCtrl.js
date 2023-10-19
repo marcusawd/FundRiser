@@ -1,31 +1,49 @@
-const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const debug = require("debug")("mern:controllers:usersCtrl");
+const pool = require("../../config/database");
+const debug = require("debug")("backend:usersCtrl");
 
 const createJWT = (user) => {
 	return jwt.sign({ user }, process.env.SECRET, {
-		expiresIn: "5m",
+		expiresIn: "15m",
 	});
 };
 
 const create = async (req, res) => {
 	const data = req.body;
+	const role = data.role ? data.role : "user";
+	const hashedPassword = await bcrypt.hash(data.password, 10);
+	const query = {
+		text: "INSERT INTO users(username, email, password, role) VALUES($1, $2, $3, $4) RETURNING id, username, email, role, created_at",
+		values: [data.username, data.email, hashedPassword, role],
+	};
 	try {
-		const user = await User.create(data);
-		const token = createJWT(user);
-		debug("token: ", token);
+		const result = await pool.query(query);
+
+		const token = createJWT(result.rows[0]);
 		res.status(201).json({ token });
 	} catch (error) {
-		res.status(500).json({ error });
+		debug("error: ", error);
+		if (error.code === "23505" && error.constraint === "users_email_key") {
+			res
+				.status(409)
+				.json({ error: "Email already exists. Please use a different email" });
+		} else {
+			res.status(500).json({ error: "Internal Server Error" });
+		}
 	}
 };
 
 const login = async (req, res) => {
+	const query = {
+		text: "SELECT * FROM users WHERE email = $1",
+		values: [req.body.email],
+	};
 	try {
-		const user = await User.findOne({ email: req.body.email });
+		const result = await pool.query(query);
+		const user = result.rows[0];
 		if (!user) {
-			throw new Error("User not found");
+			throw new Error();
 		}
 		const match = await bcrypt.compare(req.body.password, user.password);
 		if (!match) {
