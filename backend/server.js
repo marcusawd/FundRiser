@@ -7,7 +7,7 @@ const logger = require("morgan");
 const debug = require("debug")("backend:server");
 
 const usersRouter = require("./routes/api/usersRoutes");
-// const checkTokenMiddleware = require("./config/checkToken");
+const checkTokenMiddleware = require("./config/checkToken");
 
 //* app
 const app = express();
@@ -17,7 +17,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-// app.use(checkTokenMiddleware);
+app.use(checkTokenMiddleware);
 
 //* routes
 app.use("/api/users", usersRouter);
