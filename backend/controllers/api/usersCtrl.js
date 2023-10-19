@@ -4,13 +4,12 @@ const pool = require("../../config/database");
 const debug = require("debug")("backend:usersCtrl");
 
 const createJWT = (user) => {
-	const { id, username, email, role, strategy_id } = user;
+	const { id, username, email, role } = user;
 	const payload = {
 		id,
 		username,
 		email,
 		role,
-		strategy_id,
 	};
 	return jwt.sign({ user: payload }, process.env.SECRET, {
 		expiresIn: "15m",
@@ -27,12 +26,18 @@ const create = async (req, res) => {
 	};
 	try {
 		const result = await pool.query(query);
-
 		const token = createJWT(result.rows[0]);
 		res.status(201).json({ token });
 	} catch (error) {
 		debug("error: ", error);
-		if (error.code === "23505" && error.constraint === "users_email_key") {
+		if (error.code === "23514" && error.constraint === "email_format_check") {
+			res
+				.status(400)
+				.json({ error: "Email does not match the required format." });
+		} else if (
+			error.code === "23505" &&
+			error.constraint === "users_email_key"
+		) {
 			res
 				.status(409)
 				.json({ error: "Email already exists. Please use a different email" });
