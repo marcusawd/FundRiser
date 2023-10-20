@@ -12,6 +12,13 @@ CREATE TABLE investment_funds (
   allocation_asset VARCHAR(255) [] NOT NULL,
   percentage INT [] NOT NULL
 );
+CREATE TABLE stock_data (
+  data_id SERIAL PRIMARY KEY,
+  fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE,
+  ticker VARCHAR(255) NOT NULL,
+  date DATE NOT NULL,
+  close_price DECIMAL(15, 2) NOT NULL
+);
 CREATE TABLE user_investment (
   user_investment_id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(user_id) ON DELETE CASCADE,

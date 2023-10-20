@@ -1,7 +1,7 @@
 //* import -> require
 require("dotenv").config();
 require("./config/database");
-require("./utils/compoundScheduler");
+// require("./utils/compoundScheduler");
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
@@ -9,6 +9,7 @@ const debug = require("debug")("backend:server");
 
 const usersRouter = require("./routes/api/usersRoutes");
 const fundsRouter = require("./routes/api/fundsRoutes");
+const stockDataRouter = require("./routes/api/stockDataRoutes");
 const checkTokenMiddleware = require("./config/checkToken");
 
 //* app
@@ -24,6 +25,7 @@ app.use(checkTokenMiddleware);
 //* routes
 app.use("/api/users", usersRouter);
 app.use("/api/funds", fundsRouter);
+app.use("/api/stockData", stockDataRouter);
 
 //? Catch all routes
 app.get("/*", (req, res) => {
