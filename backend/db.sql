@@ -19,7 +19,10 @@ CREATE TABLE stock_data (
   date DATE NOT NULL,
   close_price DECIMAL(15, 2) NOT NULL
 );
-CREATE TABLE user_investment (
+CREATE TABLE fund_performance (
+  performance_id SERIAL PRIMARY KEY,
+  fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE,
+) CREATE TABLE user_investment (
   user_investment_id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
   fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE
@@ -38,4 +41,14 @@ CREATE TABLE transactions (
   transaction_type VARCHAR(20) NOT NULL,
   amount DECIMAL(15, 2) NOT NULL,
   transaction_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE investment_funds (
+  fund_id SERIAL PRIMARY KEY,
+  fund_name VARCHAR(50) UNIQUE NOT NULL
+);
+CREATE TABLE funds_breakdown (
+  breakdown_id SERIAL PRIMARY KEY,
+  fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE,
+  ticker VARCHAR(50) NOT NULL,
+  percentage INT NOT NULL
 );

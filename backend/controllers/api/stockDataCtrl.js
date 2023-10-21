@@ -5,7 +5,7 @@ const debug = require("debug")("backend:stockDataCtrl");
 const addTickerData = async (req, res) => {
 	const { fund_id, ticker } = req.body;
 	try {
-		const dataArr = await alphaQuery("TSLA");
+		const dataArr = await alphaQuery(ticker);
 		for (const entry of dataArr) {
 			const dateToInsert = entry[0];
 			const checkQuery = {

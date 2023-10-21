@@ -2,7 +2,7 @@ const request = require("request");
 
 const alphaQuery = (ticker) => {
 	return new Promise((resolve, reject) => {
-		const url = `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${ticker}&apikey=${process.env.ALPHA_API_KEY}`;
+		const url = `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${ticker}&apikey=${process.env.ALPHA_API_KEY}`;
 
 		request.get(
 			{
@@ -18,7 +18,7 @@ const alphaQuery = (ticker) => {
 						new Error(`Request failed with status code ${res.statusCode}`),
 					);
 				} else {
-					const monthlyTimeSeries = data["Monthly Time Series"];
+					const monthlyTimeSeries = data["Monthly Adjusted Time Series"];
 
 					const dates = Object.keys(monthlyTimeSeries).filter((date) => {
 						const currentDate = new Date(date);
@@ -32,7 +32,7 @@ const alphaQuery = (ticker) => {
 
 					const result = dates.map((date) => {
 						const entry = monthlyTimeSeries[date];
-						return [date, entry["4. close"]];
+						return [date, entry["5. adjusted close"]];
 					});
 
 					result.shift();
