@@ -1,8 +1,8 @@
 import * as userApi from "./users-api";
 
-// import debug from "debug";
+import debug from "debug";
 
-// const log = debug("mern:utilities:users-service");
+const log = debug("frontend:users-service");
 
 const signUp = async (formData) => {
 	const { name, email, password } = formData;
@@ -53,6 +53,7 @@ function getUser() {
 	}
 
 	const payload = getTokenPayload(token);
+	log(payload.user.role);
 
 	return payload.user;
 }

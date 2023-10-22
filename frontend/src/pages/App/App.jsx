@@ -1,33 +1,37 @@
 import debug from "debug";
-import NewOrderPage from "../NewOrderPage/NewOrderPage";
-import AuthPage from "../AuthPage/AuthPage";
-import { useState } from "react";
+import NewOrderPage from "../NewOrderPage/UserDashboardPage";
+import { useContext, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import OrderHistoryPage from "../OrderHistoryPage/OrderHistoryPage";
 import NavBar from "../../components/NavBar/NavBar";
+import { AdminDashboardPage } from "../Admin/AdminDashboardPage";
+import LoginPage from "../AuthPage/LoginPage";
+import { UserContext } from "../../hooks/UserProvider";
 
-const log = debug("mern:src:App");
-localStorage.debug = "mern:*";
+const log = debug("frontend:App");
+localStorage.debug = "frontend:*";
 
 log("Start app");
 
 export default function App() {
-	const [user, setUser] = useState(null);
-
-	const updateUser = (user) => setUser(user);
-
+	const { user } = useContext(UserContext);
 	return (
 		<main className="App">
+			<Routes>
+				<Route path="/profile" element={<NewOrderPage />} />
+				<Route path="/orders" element={<OrderHistoryPage />} />
+				<Route path="/admin" element={<AdminDashboardPage />} />
+			</Routes>
 			{user ? (
 				<>
-					<NavBar user={user} setUser={updateUser} />
+					<NavBar user={user} />
 					<Routes>
-						<Route path="/orders/new" element={<NewOrderPage />} />
+						<Route path="/profile" element={<NewOrderPage />} />
 						<Route path="/orders" element={<OrderHistoryPage />} />
 					</Routes>
 				</>
 			) : (
-				<AuthPage setUser={updateUser} />
+				<LoginPage />
 			)}
 		</main>
 	);
