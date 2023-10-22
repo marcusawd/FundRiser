@@ -1,54 +1,60 @@
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  username VARCHAR(255) NOT NULL,
+-- fund table
+CREATE TABLE fund (
+  fund_id SERIAL PRIMARY KEY,
+  fund_name VARCHAR(255)
+);
+-- user_fund table
+CREATE TABLE user_fund (
+  user_fund_id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES user(user_id),
+  fund_id INT REFERENCES fund(fund_id),
+  fund_share_count INT
+);
+-- fund_breakdown table
+CREATE TABLE fund_breakdown (
+  breakdown_id SERIAL PRIMARY KEY,
+  fund_id INT REFERENCES fund(fund_id),
+  ticker_id INT REFERENCES ticker(ticker_id)
+);
+-- ticker table
+CREATE TABLE ticker (
+  ticker_id SERIAL PRIMARY KEY,
+  ticker_name VARCHAR(255)
+);
+-- stock_data table
+CREATE TABLE stock_data (
+  stock_data_id SERIAL PRIMARY KEY,
+  ticker_id INT REFERENCES ticker(ticker_id),
+  date DATE,
+  close_price DECIMAL(10, 2)
+);
+-- user table
+CREATE TABLE user (
+  user_id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) DEFAULT 'user',
+  role VARCHAR(255) NOT NULL DEFAULT 'user',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE investment_funds (
-  fund_id SERIAL PRIMARY KEY,
-  fund_name VARCHAR(255) UNIQUE NOT NULL,
-  allocation_asset VARCHAR(255) [] NOT NULL,
-  percentage INT [] NOT NULL
+-- transaction table
+CREATE TABLE transaction (
+  tx_id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES user(user_id),
+  tx_type_id INT REFERENCES transaction_type(tx_type_id),
+  amount DECIMAL(10, 2),
+  date DATE,
+  fund_id INT REFERENCES fund(fund_id)
 );
-CREATE TABLE stock_data (
-  data_id SERIAL PRIMARY KEY,
-  fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE,
-  ticker VARCHAR(255) NOT NULL,
-  date DATE NOT NULL,
-  close_price DECIMAL(15, 2) NOT NULL
+-- transaction_type table
+CREATE TABLE transaction_type (
+  tx_type_id SERIAL PRIMARY KEY,
+  tx_name VARCHAR(255)
 );
-CREATE TABLE fund_performance (
-  performance_id SERIAL PRIMARY KEY,
-  fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE,
-) CREATE TABLE user_investment (
-  user_investment_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-  fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE
-);
-CREATE TABLE user_balances (
-  balance_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-  balance_amount DECIMAL(15, 2) NOT NULL,
-  last_compound_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  last_withdrawal_date TIMESTAMP,
-  last_deposit_date TIMESTAMP
-);
-CREATE TABLE transactions (
-  transaction_id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-  transaction_type VARCHAR(20) NOT NULL,
-  amount DECIMAL(15, 2) NOT NULL,
-  transaction_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-CREATE TABLE investment_funds (
-  fund_id SERIAL PRIMARY KEY,
-  fund_name VARCHAR(50) UNIQUE NOT NULL
-);
-CREATE TABLE funds_breakdown (
-  breakdown_id SERIAL PRIMARY KEY,
-  fund_id INT REFERENCES investment_funds(fund_id) ON DELETE CASCADE,
-  ticker VARCHAR(50) NOT NULL,
-  percentage INT NOT NULL
+-- fund_data table
+CREATE TABLE fund_data (
+  fund_data_id SERIAL PRIMARY KEY,
+  fund_id INT REFERENCES fund(fund_id),
+  date DATE,
+  close_price DECIMAL(10, 2)
 );

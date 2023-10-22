@@ -4,7 +4,7 @@ const fundsCtrl = require("../../controllers/api/fundsCtrl");
 const fundsBreakdownCtrl = require("../../controllers/api/fundsBreakdownCtrl");
 
 router.post("/", fundsCtrl.createFund);
-router.patch("/:fundId", fundsCtrl.renameFund);
+router.patch("/:fundName", fundsCtrl.renameFund);
 router.post("/breakdown/:fundId", fundsBreakdownCtrl.insertAsset);
 
 module.exports = router;

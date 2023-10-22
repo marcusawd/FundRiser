@@ -4,10 +4,10 @@ const pool = require("../../config/database");
 const debug = require("debug")("backend:usersCtrl");
 
 const createJWT = (user) => {
-	const { id, username, email, role } = user;
+	const { id, name, email, role } = user;
 	const payload = {
 		id,
-		username,
+		name,
 		email,
 		role,
 	};
@@ -26,8 +26,8 @@ const create = async (req, res) => {
 	const role = data.role ? data.role : "user";
 	const hashedPassword = await bcrypt.hash(data.password, 10);
 	const query = {
-		text: "INSERT INTO users(username, email, password, role) VALUES($1, $2, $3, $4) RETURNING*",
-		values: [data.username, data.email, hashedPassword, role],
+		text: "INSERT INTO users(name, email, password, role) VALUES($1, $2, $3, $4) RETURNING*",
+		values: [data.name, data.email, hashedPassword, role],
 	};
 	try {
 		const result = await pool.query(query);
