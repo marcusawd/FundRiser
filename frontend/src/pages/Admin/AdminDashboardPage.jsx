@@ -9,11 +9,9 @@ export function AdminDashboardPage() {
 	const { user } = useContext(UserContext);
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		if (!user || user.role !== "admin") {
-			navigate("/unauthorized");
-		}
-	}, [user]);
-
-	return <div>Welcome {user?.name}</div>;
+	return (
+		<div>
+			<div>Welcome {user?.name}</div>
+		</div>
+	);
 }

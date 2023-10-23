@@ -12,8 +12,8 @@ export default function AdminNavBar({ user, handleLogout }) {
 				title="Admin"
 				id="basic-nav-dropdown"
 				style={{ marginRight: "30px" }}>
-				<NavDropdown.Item onClick={() => navigate("/courses")}>
-					Browse Courses
+				<NavDropdown.Item onClick={() => navigate("/admin/tickers")}>
+					Ticker List
 				</NavDropdown.Item>
 				<NavDropdown.Item onClick={() => navigate("/courses/create")}>
 					Create A Course
