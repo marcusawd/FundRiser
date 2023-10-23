@@ -54,4 +54,22 @@ const addTickerData = async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
-module.exports = { addTickerName, addTickerData };
+
+const getTickerData = async (req, res) => {
+	let { tickerName: ticker } = req.params;
+	ticker = ticker.trim().toUpperCase();
+	const query = {
+		text: "SELECT s.*, t.ticker_name FROM stock_data s INNER JOIN ticker t ON s.ticker_id = t.ticker_id WHERE t.ticker_name = $1",
+		values: [ticker],
+	};
+	try {
+		const { rows } = await pool.query(query);
+		if (rows.length === 0) {
+			return res.status(404).json({ error: `Data for ${ticker} not found` });
+		}
+		res.json(rows);
+	} catch (error) {
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+module.exports = { addTickerName, addTickerData, getTickerData };
