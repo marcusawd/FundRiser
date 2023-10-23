@@ -9,7 +9,7 @@ import UserDashboardPage from "../User/UserDashboardPage";
 import SignupPage from "../AuthPage/SignupPage";
 import LandingPage from "./LandingPage";
 import Unauthorized from "../AuthPage/UnauthorizedPage";
-import TickersPage from "../Admin/TickersPage";
+import AllTickersPage from "../Admin/AllTickersPage";
 
 const log = debug("frontend:App");
 localStorage.debug = "frontend:*";
@@ -28,7 +28,7 @@ export default function App() {
 				{user && user.role === "admin" ? (
 					<>
 						<Route path="/admin" element={<AdminDashboardPage />}></Route>
-						<Route path="/admin/tickers" element={<TickersPage />} />
+						<Route path="/admin/tickers" element={<AllTickersPage />} />
 					</>
 				) : null}
 
