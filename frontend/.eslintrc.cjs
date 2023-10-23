@@ -17,6 +17,6 @@ module.exports = {
 			{ allowConstantExport: true },
 		],
 		"react/prop-types": "off",
-		"no-unused-vars": ["error", { varsIgnorePattern: "^_$" }],
+		"no-unused-vars": ["error", { varsIgnorePattern: "^_$|^log$" }],
 	},
 };
