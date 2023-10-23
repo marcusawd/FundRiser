@@ -26,8 +26,11 @@ export default function LoginPage() {
 		try {
 			const user = await login(credentials);
 			setUser(user);
-			log(user);
-			navigate("/profile");
+			if (user.role === "admin") {
+				navigate("/admin");
+			} else {
+				navigate("/profile");
+			}
 		} catch (error) {
 			setError("Log In Failed - Try Again");
 		}
