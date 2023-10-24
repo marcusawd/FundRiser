@@ -9,17 +9,19 @@ export default function HistoricalPriceModal({
 }) {
 	const [page, setPage] = useState(1);
 	const itemsPerPage = 12;
-	const totalPages = Math.ceil(tickerData.length / itemsPerPage);
+	const totalPages = Math.ceil(tickerData?.length / itemsPerPage);
 	const startIndex = (page - 1) * itemsPerPage;
 	const endIndex = page * itemsPerPage;
-	const currentItems = tickerData.slice(startIndex, endIndex);
+	const currentItems = tickerData?.slice(startIndex, endIndex);
 
 	return (
 		<>
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>
-						{tickerData[0].ticker_name} Adjusted Historical Price
+						{tickerData && tickerData.length > 0
+							? `${tickerData[0].ticker_name} Adjusted Historical Price`
+							: "Loading..."}
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
