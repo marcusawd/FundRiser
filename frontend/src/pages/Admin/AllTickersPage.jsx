@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import debug from "debug";
 import { getTickers } from "../../utilities/stockData-service";
 import TickerInputForm from "../../components/Ticker/TickerInputForm";
+import StockChart from "../../components/Charts/StockChart";
 
 const log = debug("frontend:AllTickersPage");
 
@@ -59,20 +60,20 @@ export default function AllTickersPage() {
 
 	return (
 		<div>
-			<h2>All Tickers</h2>
+			<h2>All Tickers in Database</h2>
 			<TickerInputForm />
 			<Table striped bordered hover>
 				<thead>
 					<tr>
 						<th>Ticker Name</th>
-						<th>Stock Growth</th>
+						<th>Stock Chart</th>
 					</tr>
 				</thead>
 				<tbody>
 					{Object.keys(allTickers.groupedTickers)?.map((ticker) => (
 						<tr key={ticker} onClick={() => handleRowClick(ticker)}>
 							<td>{ticker}</td>
-							{/* <td>{ticker.stock_growth}</td> */}
+							<td>{<StockChart data={allTickers.groupedTickers[ticker]} />}</td>
 						</tr>
 					))}
 				</tbody>

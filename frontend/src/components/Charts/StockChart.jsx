@@ -1,6 +1,4 @@
 import {
-	Bar,
-	BarChart,
 	Line,
 	LineChart,
 	ResponsiveContainer,
@@ -8,44 +6,36 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts"; //https://recharts.org/en-US/examples/SimpleLineChart
-import formatDate from "../../../helper/formatDate";
+import debug from "debug";
+import moment from "moment";
+
+const log = debug("frontend:StockChart");
 
 export default function StockChart({ data }) {
-	const reversedData = [...data].reverse();
+	log(data);
 	const minYValue = Math.round(
-		Math.min(...reversedData.map((item) => item.close)),
+		Math.min(...data.map((item) => item.close_price)),
 	);
 
 	const maxYValue = Math.ceil(
-		Math.max(...reversedData.map((item) => item.close)),
+		Math.max(...data.map((item) => item.close_price)),
 	);
 	const buffer = Math.round(0.1 * (maxYValue - minYValue));
 
-	const yDomain = [minYValue - buffer, maxYValue];
+	const yDomain = [Math.max(0, minYValue - buffer), maxYValue];
 
 	return (
 		<>
-			<h2>Stock Price</h2>
-			<ResponsiveContainer width="100%" height={400}>
-				<LineChart data={reversedData}>
+			<ResponsiveContainer width="100%" height={200}>
+				<LineChart data={data}>
 					<XAxis
 						dataKey="date"
-						tickFormatter={(date) => formatDate(new Date(date))}
+						tickFormatter={(date) => moment(date).format("MMM YY")}
 					/>
 					<YAxis domain={yDomain} />
 					<Tooltip />
-					<Line type="monotone" dataKey="close" stroke="#8884d8" />
+					<Line type="monotone" dataKey="close_price" stroke="#8884d8" />
 				</LineChart>
-			</ResponsiveContainer>
-			<ResponsiveContainer width="100%" height={150}>
-				<BarChart data={reversedData}>
-					<XAxis
-						dataKey="date"
-						tickFormatter={(date) => formatDate(new Date(date))}
-					/>
-					<YAxis />
-					<Bar dataKey="volume" fill="#82ca9d" />
-				</BarChart>
 			</ResponsiveContainer>
 		</>
 	);
