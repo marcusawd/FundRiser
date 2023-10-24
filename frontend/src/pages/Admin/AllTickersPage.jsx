@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Pagination, Spinner, Table } from "react-bootstrap";
-import TickerModal from "../../components/Ticker/TickerModal";
+import HistoricalPriceModal from "../../components/Ticker/HistoricalPriceModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import debug from "debug";
 import { getTickers } from "../../utilities/stockData-service";
@@ -78,10 +78,10 @@ export default function AllTickersPage() {
 				</tbody>
 			</Table>
 			{selectedTicker && (
-				<TickerModal
+				<HistoricalPriceModal
 					show={showModal}
 					handleClose={() => setShowModal(false)}
-					ticker={selectedTicker}
+					tickerData={allTickers.groupedTickers[selectedTicker]}
 				/>
 			)}
 			<Pagination className="justify-content-center mt-3">

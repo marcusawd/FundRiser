@@ -25,7 +25,7 @@ export default function StockChart({ data }) {
 
 	return (
 		<>
-			<h2>Stock Price and Volume Graph</h2>
+			<h2>Stock Price</h2>
 			<ResponsiveContainer width="100%" height={400}>
 				<LineChart data={reversedData}>
 					<XAxis
