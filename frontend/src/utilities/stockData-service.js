@@ -16,3 +16,13 @@ export async function getTickers(queryParams) {
 
 	return { tickers, totalPages };
 }
+
+export async function addTicker(ticker) {
+	const message = await stockDataApi.addTicker(ticker);
+	return message;
+}
+
+export async function addTickerData(ticker) {
+	const message = await stockDataApi.addTickerData(ticker);
+	return message;
+}

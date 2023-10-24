@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Container, Pagination, Spinner, Table } from "react-bootstrap";
+import { Button, Container, Pagination, Spinner, Table } from "react-bootstrap";
 import TickerModal from "../../components/Ticker/TickerModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import debug from "debug";
 import { getTickers } from "../../utilities/stockData-service";
+import TickerInputForm from "../../components/Ticker/TickerInputForm";
 
 const log = debug("frontend:AllTickersPage");
 
@@ -20,9 +21,9 @@ export default function AllTickersPage() {
 		async function fetchCourses() {
 			try {
 				const queryParams = new URLSearchParams(location.search);
-				const data = await getTickers(queryParams);
+				// const data = await getTickers(queryParams);
 				log(data);
-				setAllTickers(data);
+				// setAllTickers(data);
 				setLoading(false);
 			} catch (error) {
 				log("Error fetching tickers", error);
@@ -66,6 +67,7 @@ export default function AllTickersPage() {
 	return (
 		<div>
 			<h2>All Tickers</h2>
+			<TickerInputForm />
 			<Table striped bordered hover>
 				<thead>
 					<tr>
