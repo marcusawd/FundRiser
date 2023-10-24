@@ -11,8 +11,8 @@ export async function getTickers(params) {
 	);
 }
 export async function addTicker(ticker) {
-	const messages = await sendRequest(BASE_URL, "POST", ticker);
-	return messages;
+	const message = await sendRequest(BASE_URL, "POST", ticker);
+	return message;
 }
 export async function addTickerData(ticker) {
 	const message = await sendRequest(`${BASE_URL}/${ticker}`, "POST");

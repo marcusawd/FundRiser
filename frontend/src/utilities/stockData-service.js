@@ -1,3 +1,4 @@
+import { calculateGrowth } from "../helper/calculateGrowth";
 import * as stockDataApi from "./stockData-api";
 
 import debug from "debug";
@@ -13,8 +14,15 @@ export async function getTickers(queryParams) {
 
 	const totalPages = Math.ceil(data.totalCount / pageSize);
 	const tickers = data.tickers;
-
-	return { tickers, totalPages };
+	const groupedTickers = tickers.reduce((acc, curr) => {
+		if (!acc[curr.ticker_name]) {
+			acc[curr.ticker_name] = [];
+		}
+		acc[curr.ticker_name].push(curr);
+		return acc;
+	}, {});
+	calculateGrowth(groupedTickers);
+	return { groupedTickers, totalPages };
 }
 
 export async function addTicker(ticker) {

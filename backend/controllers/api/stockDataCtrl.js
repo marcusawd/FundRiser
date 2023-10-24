@@ -38,7 +38,6 @@ const addTickerData = async (req, res) => {
 				values: [ticker, dateToInsert],
 			};
 			const { rows } = await pool.query(checkQuery);
-			debug(rows);
 			if (rows.length === 0) {
 				//* Data doesnt exist, insert it into table
 				const insertQuery = {
@@ -72,4 +71,40 @@ const getTickerData = async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
-module.exports = { addTickerName, addTickerData, getTickerData };
+
+const getTickers = async (req, res) => {
+	const page = Number(req.query.page) || 1;
+	const pageSize = Number(req.query.pageSize) || 8;
+	const skip = (page - 1) * pageSize;
+	const resultData = { tickers: [], totalCount: 0 };
+
+	const query = {
+		text: `
+          SELECT t.ticker_name, sd.date, sd.close_price
+          FROM stock_data sd
+          JOIN ticker t ON sd.ticker_id = t.ticker_id
+          WHERE sd.ticker_id IN (
+              SELECT ticker_id
+              FROM ticker
+              ORDER BY ticker_name
+              LIMIT $1 OFFSET $2
+          )
+          ORDER BY t.ticker_name;`,
+		values: [pageSize, skip],
+	};
+	try {
+		const data = await pool.query(query);
+		debug(data.rows.length);
+		if (data.rows.length > 0) {
+			resultData.tickers = data.rows;
+		}
+		const count = await pool.query("SELECT COUNT(ticker_id) FROM ticker");
+
+		resultData.totalCount = Number(count.rows[0].count);
+		debug(resultData);
+		res.json(resultData);
+	} catch (error) {
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+module.exports = { addTickerName, addTickerData, getTickerData, getTickers };
