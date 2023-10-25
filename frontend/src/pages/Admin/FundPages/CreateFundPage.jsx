@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+	Alert,
 	Button,
 	Col,
 	Container,
@@ -9,24 +10,24 @@ import {
 	Table,
 } from "react-bootstrap";
 import debug from "debug";
+import { getAllTickers } from "../../../utilities/ticker-service";
+import { createFund } from "../../../utilities/fund-service";
 
 const log = debug("frontend:CreateFundPage");
 
 export default function CreateFundPage() {
-	const [tickers, setTickers] = useState([
-		"AAPL",
-		"GOOGL",
-		"MSFT",
-		"AMZN",
-		"META",
-	]);
+	const [tickers, setTickers] = useState([]);
 	const [selectedTickers, setSelectedTickers] = useState({});
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		async function fetchTickers() {
 			try {
-				log(data);
-			} catch (error) {}
+				const data = await getAllTickers();
+				setTickers(data);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 		fetchTickers();
 	}, []);
@@ -49,102 +50,132 @@ export default function CreateFundPage() {
 	const totalWeightageStyle =
 		totalWeightage === 100 ? { color: "green" } : { color: "red" };
 
-	const handleFormSubmit = (event) => {
+	const handleFormSubmit = async (event) => {
+		setError("");
 		event.preventDefault();
-		// Add your form submission logic here
+		const fundData = {
+			fund_name: event.target.fundName.value,
+			description: event.target.description.value,
+		};
+		if (event.target.date.value) {
+			fundData.created_at = event.target.date.value;
+		}
+		log(fundData);
+
+		try {
+			if (totalWeightage !== 100) {
+				throw new Error("Total Weightage doesnt add to 100%");
+			}
+			const message = await createFund(fundData);
+			log(message);
+		} catch (error) {
+			setError(error.message);
+		}
 	};
 
 	return (
-		<Form
-			onSubmit={handleFormSubmit}
-			style={{ width: "90%", margin: "0 auto" }}>
-			<Form.Group className="mb-3" controlId="fundName">
-				<Form.Label>Fund Name</Form.Label>
-				<Form.Control type="text" placeholder="" />
-			</Form.Group>
-			<Form.Group className="mb-3" controlId="description">
-				<Form.Label>Description</Form.Label>
-				<Form.Control
-					as="textarea"
-					rows={3}
-					placeholder="Short description of fund category and purpose"
-				/>
-			</Form.Group>
-			<Container fluid className="mb-3 text-center">
-				<Row>
-					<Col xs={12} sm={8}>
-						<Form.Group controlId="selectedTickers">
-							<Form.Label>Selected Tickers:</Form.Label>
-							<Table striped bordered hover>
-								<thead>
-									<tr>
-										<th style={{ width: "5%" }}>#</th>
-										<th style={{ width: "40%" }}>Ticker</th>
-										<th style={{ width: "15%" }}>Weightage</th>
-										<th style={{ width: "15%" }}>Actions</th>
-									</tr>
-								</thead>
-								<tbody>
-									{Object.keys(selectedTickers)?.map((ticker, index) => (
-										<tr key={ticker}>
-											<td>{index + 1}</td>
-											<td>{ticker}</td>
-											<td>
-												<Form.Control
-													type="number"
-													value={selectedTickers[ticker]}
-													min={0}
-													onChange={(e) =>
-														setSelectedTickers({
-															...selectedTickers,
-															[ticker]: e.target.value,
-														})
-													}
-												/>
-											</td>
-											<td>
-												<Button
-													variant="danger"
-													onClick={() => handleRemoveTicker(ticker)}>
-													Remove
-												</Button>
-											</td>
+		<>
+			<Form
+				onSubmit={handleFormSubmit}
+				style={{ width: "90%", margin: "0 auto" }}>
+				<Form.Group className="mb-3" controlId="fundName">
+					<Form.Label>Fund Name</Form.Label>
+					<Form.Control type="text" placeholder="" required />
+				</Form.Group>
+				<Form.Group className="mb-3" controlId="description">
+					<Form.Label>Description</Form.Label>
+					<Form.Control
+						as="textarea"
+						rows={3}
+						placeholder="Short description of fund category and purpose"
+						required
+					/>
+				</Form.Group>
+				<Form.Group className="mb-3" controlId="date">
+					<Form.Label>Date (Optional)</Form.Label>
+					<Form.Control type="text" placeholder="YYYY-MM-DD" />
+				</Form.Group>
+				<Container fluid className="mb-3 text-center">
+					<Row>
+						<Col xs={12} sm={8}>
+							<Form.Group controlId="selectedTickers">
+								<Form.Label>Selected Tickers:</Form.Label>
+								<Table striped bordered hover>
+									<thead>
+										<tr>
+											<th style={{ width: "5%" }}>#</th>
+											<th style={{ width: "40%" }}>Ticker</th>
+											<th style={{ width: "15%" }}>Weightage</th>
+											<th style={{ width: "15%" }}>Actions</th>
 										</tr>
+									</thead>
+									<tbody>
+										{Object.keys(selectedTickers)?.map((ticker, index) => (
+											<tr key={ticker}>
+												<td>{index + 1}</td>
+												<td>{ticker}</td>
+												<td>
+													<Form.Control
+														type="number"
+														value={selectedTickers[ticker]}
+														min={0}
+														onChange={(e) =>
+															setSelectedTickers({
+																...selectedTickers,
+																[ticker]: e.target.value,
+															})
+														}
+													/>
+												</td>
+												<td>
+													<Button
+														variant="danger"
+														onClick={() => handleRemoveTicker(ticker)}>
+														Remove
+													</Button>
+												</td>
+											</tr>
+										))}
+										<tr>
+											<td></td>
+											<td>Total Weightage:</td>
+											<td style={totalWeightageStyle}>{totalWeightage}%</td>
+											<td></td>
+										</tr>
+									</tbody>
+								</Table>
+							</Form.Group>
+						</Col>
+						<Col>
+							<Form.Group controlId="selectTicker">
+								<Form.Label>Select Ticker:</Form.Label>
+								<ListGroup>
+									{tickers.map((ticker) => (
+										<ListGroup.Item key={ticker}>
+											{ticker}
+											<Button
+												variant="primary"
+												className="ms-2"
+												onClick={() => handleAddTicker(ticker)}>
+												+
+											</Button>
+										</ListGroup.Item>
 									))}
-									<tr>
-										<td></td>
-										<td>Total Weightage:</td>
-										<td style={totalWeightageStyle}>{totalWeightage}%</td>
-										<td></td>
-									</tr>
-								</tbody>
-							</Table>
-						</Form.Group>
-					</Col>
-					<Col>
-						<Form.Group controlId="selectTicker">
-							<Form.Label>Select Ticker:</Form.Label>
-							<ListGroup>
-								{tickers.map((ticker) => (
-									<ListGroup.Item key={ticker}>
-										{ticker}
-										<Button
-											variant="primary"
-											className="ms-2"
-											onClick={() => handleAddTicker(ticker)}>
-											+
-										</Button>
-									</ListGroup.Item>
-								))}
-							</ListGroup>
-						</Form.Group>
-					</Col>
-				</Row>
-			</Container>
+								</ListGroup>
+							</Form.Group>
+						</Col>
+					</Row>
+				</Container>
 
-			<Button variant="primary" type="submit">
-				Submit
-			</Button>
-		</Form>
+				<Button variant="primary" type="submit" className="mb-3">
+					Submit
+				</Button>
+			</Form>
+			{error && (
+				<Alert variant="danger" style={{ width: "90%", margin: "auto" }}>
+					{error}
+				</Alert>
+			)}
+		</>
 	);
 }

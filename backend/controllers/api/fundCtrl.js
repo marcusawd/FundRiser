@@ -27,7 +27,6 @@ const createFund = async (req, res) => {
 			.status(201)
 			.json({ message: `${fund_name} fund successfully created!` });
 	} catch (error) {
-		console.error(error);
 		if (error.code === "23505" && error.constraint === "fund_fund_name_key") {
 			return res
 				.status(409)
