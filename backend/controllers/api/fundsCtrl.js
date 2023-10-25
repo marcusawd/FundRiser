@@ -2,17 +2,32 @@ const pool = require("../../config/database");
 const debug = require("debug")("backend:fundsCtrl");
 
 const createFund = async (req, res) => {
-	const { fund_name } = req.body;
-	const query = {
-		text: "INSERT INTO fund(fund_name) VALUES($1)",
-		values: [fund_name],
-	};
+	const { fund_name, description, created_at } = req.body;
+
+	if (!fund_name || !description) {
+		return res
+			.status(400)
+			.json({ error: "Fund name and description are required fields." });
+	}
+	let query;
+	if (created_at) {
+		query = {
+			text: "INSERT INTO fund(fund_name, description, created_at) VALUES($1,$2,$3)",
+			values: [fund_name, description, created_at],
+		};
+	} else {
+		query = {
+			text: "INSERT INTO fund(fund_name, description) VALUES($1,$2)",
+			values: [fund_name, description],
+		};
+	}
 	try {
-		const { rows } = await pool.query(query);
+		const data = await pool.query(query);
 		res
 			.status(201)
 			.json({ message: `${fund_name} fund successfully created!` });
 	} catch (error) {
+		console.error(error);
 		if (error.code === "23505" && error.constraint === "fund_fund_name_key") {
 			return res
 				.status(409)
@@ -24,10 +39,10 @@ const createFund = async (req, res) => {
 
 const renameFund = async (req, res) => {
 	const oldName = decodeURIComponent(req.params.fundName);
-	const { fund_name: newName } = req.body;
+	const { fund_name: newName, description } = req.body;
 
 	const checkParamsQuery = {
-		text: "SELECT * FROM funds WHERE fund_name = $1",
+		text: "SELECT * FROM fund WHERE fund_name = $1",
 		values: [oldName],
 	};
 	try {
@@ -50,20 +65,20 @@ const renameFund = async (req, res) => {
 				error: `${newName} already exists. Please use a different name`,
 			});
 		}
-	} else {
-		return res.status(409).json({ error: "Please enter a valid name" });
 	}
 
 	const updateQuery = {
-		text: "UPDATE fund SET fund_name = $1 WHERE fund_name = $2",
-		values: [newName, oldName],
+		text: `UPDATE fund
+           SET
+              fund_name = COALESCE($1, fund_name),
+              description = COALESCE($2, description)
+           WHERE fund_name = $3`,
+		values: [newName, description, oldName],
 	};
 
 	try {
 		await pool.query(updateQuery);
-		res
-			.status(200)
-			.json({ message: `${oldName} has been changed to ${newName}` });
+		res.status(200).json({ message: "Fund successfully updated!" });
 	} catch (error) {
 		res.status(500).json({ error: "Error executing query" });
 	}
