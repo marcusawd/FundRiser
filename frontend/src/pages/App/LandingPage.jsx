@@ -6,12 +6,8 @@ export default function LandingPage() {
 				<div className="row">
 					<div className="col-lg-6 col-12">
 						<div className="header-intro">
-							<h4>Welcome to FinCademy!</h4>
-							<p>
-								FinCademy is an all-accessible, all-encompassing e-learning
-								platform for financial literacy guaranteed to make your
-								financial management skills +69,420.
-							</p>
+							<h4>Welcome to FundRiser!</h4>
+							<p>FundRiser description here</p>
 						</div>
 					</div>
 					<div className="col-lg-6 col-12">
@@ -31,10 +27,7 @@ export default function LandingPage() {
 						<div className="col-12">
 							<h5>Our Services</h5>
 							<h2>Services We Provide</h2>
-							<p>
-								Sharing financial literacy tips and tricks to get you through
-								your peasant-like lifestyles.
-							</p>
+							<p>Purchase from a list of curated funds managed by us!</p>
 						</div>
 					</div>
 				</div>

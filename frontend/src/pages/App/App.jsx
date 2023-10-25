@@ -9,7 +9,8 @@ import UserDashboardPage from "../User/UserDashboardPage";
 import SignupPage from "../AuthPage/SignupPage";
 import LandingPage from "./LandingPage";
 import Unauthorized from "../AuthPage/UnauthorizedPage";
-import AllTickersPage from "../Admin/AllTickersPage";
+import AllTickersPage from "../Admin/TickersPages/AllTickersPage";
+import CreateFundPage from "../Admin/FundPages/CreateFundPage";
 
 const log = debug("frontend:App");
 localStorage.debug = "frontend:*";
@@ -29,6 +30,7 @@ export default function App() {
 					<>
 						<Route path="/admin" element={<AdminDashboardPage />}></Route>
 						<Route path="/admin/tickers" element={<AllTickersPage />} />
+						<Route path="/admin/funds/create" element={<CreateFundPage />} />
 					</>
 				) : null}
 

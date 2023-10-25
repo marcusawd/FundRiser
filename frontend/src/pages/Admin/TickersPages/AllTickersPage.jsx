@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Container, Pagination, Spinner, Table } from "react-bootstrap";
-import HistoricalPriceModal from "../../components/Ticker/HistoricalPriceModal";
+import HistoricalPriceModal from "../../../components/Ticker/HistoricalPriceModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import debug from "debug";
-import { getTickers } from "../../utilities/stockData-service";
-import TickerInputForm from "../../components/Ticker/TickerInputForm";
-import StockChart from "../../components/Charts/StockChart";
+import { getTickers } from "../../../utilities/stockData-service";
+import TickerInputForm from "../../../components/Ticker/TickerInputForm";
+import StockChart from "../../../components/Charts/StockChart";
 
 const log = debug("frontend:AllTickersPage");
 
@@ -18,6 +18,7 @@ export default function AllTickersPage() {
 	const [page, setPage] = useState(1);
 	const [allTickers, setAllTickers] = useState({});
 
+	// Todo - Add a formSubmitted state change to the addTicker and the Modal (If you are gonna add an update button)
 	useEffect(() => {
 		async function fetchCourses() {
 			try {
