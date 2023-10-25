@@ -39,7 +39,7 @@ CREATE TABLE fund_breakdown (
 -- stock_data table
 CREATE TABLE stock_data (
   stock_data_id SERIAL PRIMARY KEY,
-  ticker_id INT NOT NULL REFERENCES ticker(ticker_id),
+  ticker_id INT NOT NULL REFERENCES ticker(ticker_id) ON DELETE CASCADE,
   date DATE,
   close_price DECIMAL(10, 2)
 );

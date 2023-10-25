@@ -2,29 +2,6 @@ const pool = require("../../config/database");
 const alphaQuery = require("../../utils/alphaQuery");
 const debug = require("debug")("backend:stockDataCtrl");
 
-const addTickerName = async (req, res) => {
-	let { ticker } = req.body;
-	ticker = ticker.trim().toUpperCase();
-	const query = {
-		text: "INSERT INTO ticker(ticker_name) VALUES($1)",
-		values: [ticker],
-	};
-	try {
-		await pool.query(query);
-		res
-			.status(201)
-			.json({ message: `${ticker} successfully added into Database!` });
-	} catch (error) {
-		if (
-			error.code === "23505" &&
-			error.constraint === "ticker_ticker_name_key"
-		) {
-			return res.status(409).json({ error: "Ticker name already in Database" });
-		}
-		res.status(500).json({ error: "Internal Server Error" });
-	}
-};
-
 const addTickerData = async (req, res) => {
 	let { tickerName: ticker } = req.params;
 	ticker = ticker.trim().toUpperCase();
@@ -94,17 +71,15 @@ const getTickers = async (req, res) => {
 	};
 	try {
 		const data = await pool.query(query);
-		debug(data.rows.length);
 		if (data.rows.length > 0) {
 			resultData.tickers = data.rows;
 		}
 		const count = await pool.query("SELECT COUNT(ticker_id) FROM ticker");
 
 		resultData.totalCount = Number(count.rows[0].count);
-		debug(resultData);
 		res.json(resultData);
 	} catch (error) {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
-module.exports = { addTickerName, addTickerData, getTickerData, getTickers };
+module.exports = { addTickerData, getTickerData, getTickers };
