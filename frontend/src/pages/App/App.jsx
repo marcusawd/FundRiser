@@ -30,7 +30,7 @@ export default function App() {
 					<>
 						<Route path="/admin" element={<AdminDashboardPage />}></Route>
 						<Route path="/admin/tickers" element={<AllTickersPage />} />
-						<Route path="/admin/funds/create" element={<CreateFundPage />} />
+						<Route path="/admin/fund/create" element={<CreateFundPage />} />
 					</>
 				) : null}
 
