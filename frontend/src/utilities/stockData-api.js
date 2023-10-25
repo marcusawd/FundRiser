@@ -10,10 +10,7 @@ export async function getTickers(params) {
 		`${BASE_URL}?page=${params.page}&pageSize=${params.pageSize}`,
 	);
 }
-export async function addTicker(ticker) {
-	const message = await sendRequest(BASE_URL, "POST", ticker);
-	return message;
-}
+
 export async function addTickerData(ticker) {
 	const message = await sendRequest(`${BASE_URL}/${ticker}`, "POST");
 	return message;

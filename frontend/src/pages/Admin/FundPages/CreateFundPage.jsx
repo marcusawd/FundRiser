@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	Button,
 	Col,
@@ -8,6 +8,9 @@ import {
 	Row,
 	Table,
 } from "react-bootstrap";
+import debug from "debug";
+
+const log = debug("frontend:CreateFundPage");
 
 export default function CreateFundPage() {
 	const [tickers, setTickers] = useState([
@@ -18,6 +21,15 @@ export default function CreateFundPage() {
 		"META",
 	]);
 	const [selectedTickers, setSelectedTickers] = useState({});
+
+	useEffect(() => {
+		async function fetchTickers() {
+			try {
+				log(data);
+			} catch (error) {}
+		}
+		fetchTickers();
+	}, []);
 
 	const handleAddTicker = (ticker) => {
 		setTickers(tickers.filter((t) => t !== ticker));

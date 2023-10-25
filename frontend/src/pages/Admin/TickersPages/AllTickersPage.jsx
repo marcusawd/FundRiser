@@ -20,7 +20,7 @@ export default function AllTickersPage() {
 
 	// Todo - Add a formSubmitted state change to the addTicker and the Modal (If you are gonna add an update button)
 	useEffect(() => {
-		async function fetchCourses() {
+		async function fetchTickers() {
 			try {
 				const queryParams = new URLSearchParams(location.search);
 				const data = await getTickers(queryParams);
@@ -32,7 +32,7 @@ export default function AllTickersPage() {
 				setLoading(false);
 			}
 		}
-		fetchCourses();
+		fetchTickers();
 	}, [page, location]);
 
 	const handlePageChange = (newPage) => {

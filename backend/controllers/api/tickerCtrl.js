@@ -1,6 +1,18 @@
 const pool = require("../../config/database");
 const debug = require("debug")("backend:tickerCtrl");
 
+const getAllTickers = async (req, res) => {
+	try {
+		const { rows } = await pool.query(
+			"SELECT ticker_name FROM ticker ORDER BY ticker_name",
+		);
+		const tickers = rows.map((data) => data.ticker_name);
+		res.json(tickers);
+	} catch (error) {
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+
 const addTickerName = async (req, res) => {
 	let { ticker } = req.body;
 	ticker = ticker.trim().toUpperCase();
@@ -44,4 +56,4 @@ const deleteTicker = async (req, res) => {
 	}
 };
 
-module.exports = { addTickerName, deleteTicker };
+module.exports = { getAllTickers, addTickerName, deleteTicker };

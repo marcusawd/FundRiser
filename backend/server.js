@@ -10,6 +10,7 @@ const debug = require("debug")("backend:server");
 const usersRouter = require("./routes/api/usersRoutes");
 const fundsRouter = require("./routes/api/fundsRoutes");
 const stockDataRouter = require("./routes/api/stockDataRoutes");
+const tickerRouter = require("./routes/api/tickerRoutes");
 const checkTokenMiddleware = require("./config/checkToken");
 
 //* app
@@ -26,6 +27,7 @@ app.use(checkTokenMiddleware);
 app.use("/api/users", usersRouter);
 app.use("/api/funds", fundsRouter);
 app.use("/api/stockData", stockDataRouter);
+app.use("/api/ticker", tickerRouter);
 
 //? Catch all routes
 app.get("/*", (req, res) => {

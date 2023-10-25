@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, Button, Alert, ProgressBar } from "react-bootstrap";
-import { addTicker, addTickerData } from "../../utilities/stockData-service";
+import { addTickerData } from "../../utilities/stockData-service";
+import { addTicker } from "../../utilities/ticker-service";
 import debug from "debug";
 
 const log = debug("frontend:TickerInputForm");
