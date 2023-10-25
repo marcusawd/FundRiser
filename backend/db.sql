@@ -32,8 +32,9 @@ CREATE TABLE ticker (
 -- fund_breakdown table
 CREATE TABLE fund_breakdown (
   breakdown_id SERIAL PRIMARY KEY,
-  fund_id INT REFERENCES fund(fund_id),
-  ticker_id INT REFERENCES ticker(ticker_id)
+  fund_id INT REFERENCES fund(fund_id) ON DELETE CASCADE,
+  ticker_id INT REFERENCES ticker(ticker_id) ON DELETE CASCADE,
+  weightage INT NOT NULL
 );
 -- DROP TABLE fund_breakdown
 -- stock_data table
