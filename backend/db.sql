@@ -64,7 +64,7 @@ CREATE TABLE transactions (
 -- fund_data table
 CREATE TABLE fund_data (
   fund_data_id SERIAL PRIMARY KEY,
-  fund_id INT NOT NULL REFERENCES fund(fund_id),
+  fund_id INT NOT NULL REFERENCES fund(fund_id) ON DELETE CASCADE,
   date DATE,
   close_price DECIMAL(10, 2)
 );

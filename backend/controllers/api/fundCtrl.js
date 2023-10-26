@@ -22,7 +22,21 @@ const createFund = async (req, res) => {
 		};
 	}
 	try {
-		const data = await pool.query(query);
+		await pool.query(query);
+
+		//* Add base stock price
+		const dataQuery = {
+			text: `WITH fund_info AS (
+              SELECT f.fund_id, f.created_at
+              FROM fund f
+              WHERE f.fund_name = $1
+              )
+            INSERT INTO fund_data(fund_id, date, close_price)
+            SELECT fund_info.fund_id, fund_info.created_at, 10
+            FROM fund_info`,
+			values: [fund_name],
+		};
+		await pool.query(dataQuery);
 		res
 			.status(201)
 			.json({ message: `${fund_name} fund successfully created!` });
