@@ -7,7 +7,7 @@ const getAllTickers = async (req, res) => {
 			"SELECT ticker_name FROM ticker ORDER BY ticker_name",
 		);
 		const tickers = rows.map((data) => data.ticker_name);
-		res.json(tickers);
+		res.json({ tickers });
 	} catch (error) {
 		res.status(500).json({ error: "Internal Server Error" });
 	}

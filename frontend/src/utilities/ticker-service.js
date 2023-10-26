@@ -1,4 +1,7 @@
 import * as tickerApi from "./ticker-api";
+import debug from "debug";
+
+const log = debug("frontend:ticker-service");
 
 export async function addTicker(ticker) {
 	const message = await tickerApi.addTicker(ticker);
@@ -6,6 +9,11 @@ export async function addTicker(ticker) {
 }
 
 export async function getAllTickers() {
-	const tickers = await tickerApi.getAllTickers();
-	return tickers;
+	const data = await tickerApi.getAllTickers();
+	debug(data);
+	if (data.tickers) {
+		return data.tickers;
+	} else {
+		throw new Error(data.error);
+	}
 }
