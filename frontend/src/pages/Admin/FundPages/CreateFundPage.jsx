@@ -16,6 +16,7 @@ import { createFund, insertAsset } from "../../../utilities/fund-service";
 import { useNavigate } from "react-router-dom";
 
 const log = debug("frontend:CreateFundPage");
+// TODO getFundTickerData (Group tickers, Calculate Growth) -> Calculate fund growth based on weightage -> Calculate close_price based on growth -> POST close_price into fund_data
 
 export default function CreateFundPage() {
 	const [tickers, setTickers] = useState([]);
@@ -28,10 +29,10 @@ export default function CreateFundPage() {
 	useEffect(() => {
 		async function fetchTickers() {
 			try {
-				const data = await getAllTickers();
-				setTickers(data);
+				const tickers = await getAllTickers();
+				setTickers(tickers);
 			} catch (error) {
-				console.log(error);
+				log(error.message);
 			}
 		}
 		fetchTickers();
@@ -173,7 +174,7 @@ export default function CreateFundPage() {
 							<Form.Group controlId="selectTicker">
 								<Form.Label>Select Ticker:</Form.Label>
 								<ListGroup>
-									{tickers.map((ticker) => (
+									{tickers?.map((ticker) => (
 										<ListGroup.Item key={ticker}>
 											{ticker}
 											<Button
@@ -193,10 +194,15 @@ export default function CreateFundPage() {
 				<Button variant="primary" type="submit" className="mb-3 me-3">
 					Submit
 				</Button>
-				{loading && (
-					<ProgressBar animated now={progress} label={`${progress}%`} />
-				)}
 			</Form>
+			{loading && (
+				<ProgressBar
+					animated
+					now={progress}
+					label={`${progress}%`}
+					style={{ width: "90%", margin: "auto" }}
+				/>
+			)}
 			{error && (
 				<Alert variant="danger" style={{ width: "90%", margin: "auto" }}>
 					{error}
