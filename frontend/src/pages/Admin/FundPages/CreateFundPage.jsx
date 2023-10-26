@@ -24,6 +24,9 @@ import moment from "moment";
 
 const log = debug("frontend:CreateFundPage");
 
+// TODO Need to ensure correct-ness of date, otherwise data added might fuck up.
+// TODO Try to seperate some components and functions, this jsx file is lagging my system i think
+
 export default function CreateFundPage() {
 	const [tickers, setTickers] = useState([]);
 	const [selectedTickers, setSelectedTickers] = useState({});
