@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const fundCtrl = require("../../controllers/api/fundCtrl");
-const fundsBreakdownCtrl = require("../../controllers/api/fundsBreakdownCtrl");
+const fundBreakdownCtrl = require("../../controllers/api/fundBreakdownCtrl");
 
 router.post("/", fundCtrl.createFund);
 router.patch("/:fundName", fundCtrl.renameFund);
-router.post("/breakdown/:fundId", fundsBreakdownCtrl.insertAsset);
+router.post("/breakdown/:fundName", fundBreakdownCtrl.insertAsset);
 
 module.exports = router;

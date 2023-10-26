@@ -8,3 +8,8 @@ export async function createFund(fundData) {
 		throw new Error(response.error);
 	}
 }
+
+export async function insertAsset(fundName, fundData) {
+	const response = await fundApi.insertAsset(fundName, fundData);
+	return response;
+}

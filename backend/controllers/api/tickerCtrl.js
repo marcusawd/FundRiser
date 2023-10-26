@@ -46,7 +46,7 @@ const deleteTicker = async (req, res) => {
 	try {
 		const { rows } = await pool.query(query);
 		debug(rows);
-		if (rows.length !== 0) {
+		if (rows.length > 0) {
 			res.json({ message: `${ticker} successfully deleted` });
 		} else {
 			res.status(404).json({ message: `${ticker} not found` });
