@@ -15,3 +15,7 @@ export async function addTickerData(ticker) {
 	const message = await sendRequest(`${BASE_URL}/${ticker}`, "POST");
 	return message;
 }
+
+export async function getFundTickerData(fundName) {
+	return sendRequest(`${BASE_URL}/${fundName}`);
+}

@@ -10,3 +10,12 @@ export const calculateGrowth = (data) => {
 	}
 	return data;
 };
+
+export const convertPercentageStringToNumber = (percentageString) => {
+	if (typeof percentageString === "string") {
+		const stringWithoutPercentageSign = percentageString.replace("%", "");
+		return parseFloat(stringWithoutPercentageSign) / 100;
+	} else {
+		return 0;
+	}
+};

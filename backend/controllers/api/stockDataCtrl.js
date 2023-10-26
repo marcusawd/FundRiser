@@ -69,7 +69,7 @@ const getFundTickerData = async (req, res) => {
 	const fundName = decodeURIComponent(req.params.fundName);
 	const query = {
 		text: `
-          SELECT f.fund_id, sd.ticker_id, sd.close_price, fb.weightage
+          SELECT f.fund_id, sd.ticker_id, fb.weightage, sd.close_price, sd.date
           FROM stock_data sd
           JOIN fund_breakdown fb ON fb.ticker_id = sd.ticker_id
           JOIN fund f ON f.fund_id = fb.fund_id
@@ -78,7 +78,6 @@ const getFundTickerData = async (req, res) => {
 	};
 	try {
 		const { rows } = await pool.query(query);
-		debug(rows);
 		if (rows.length === 0) {
 			return res.status(404).json({ error: `Data for ${fundName} not found` });
 		}

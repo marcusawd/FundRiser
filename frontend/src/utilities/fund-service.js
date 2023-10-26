@@ -13,3 +13,8 @@ export async function insertAsset(fundName, fundData) {
 	const response = await fundApi.insertAsset(fundName, fundData);
 	return response;
 }
+
+export async function insertFundData(fundName, fundData) {
+	const response = await fundApi.insertFundData(fundName, fundData);
+	return response;
+}

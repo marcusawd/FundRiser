@@ -12,11 +12,17 @@ import {
 } from "react-bootstrap";
 import debug from "debug";
 import { getAllTickers } from "../../../utilities/ticker-service";
-import { createFund, insertAsset } from "../../../utilities/fund-service";
+import {
+	createFund,
+	insertAsset,
+	insertFundData,
+} from "../../../utilities/fund-service";
 import { useNavigate } from "react-router-dom";
+import { getFundTickerData } from "../../../utilities/stockData-service";
+import { convertPercentageStringToNumber } from "../../../helper/calculateGrowth";
+import moment from "moment";
 
 const log = debug("frontend:CreateFundPage");
-// TODO getFundTickerData (Group tickers, Calculate Growth) -> Calculate fund growth based on weightage -> Calculate close_price based on growth -> POST close_price into fund_data
 
 export default function CreateFundPage() {
 	const [tickers, setTickers] = useState([]);
@@ -75,6 +81,7 @@ export default function CreateFundPage() {
 			if (totalWeightage !== 100) {
 				throw new Error("Total Weightage doesnt add to 100%");
 			}
+			//! 1. Create Fund
 			await createFund(fundData);
 			setProgress(25);
 
@@ -83,7 +90,47 @@ export default function CreateFundPage() {
 					return insertAsset(fundData.fund_name, { ticker, weightage });
 				},
 			);
+			//! 2. Adding Fund breakdown
 			await Promise.all(promises);
+			setProgress(35);
+
+			//! 3. Fetching stock data from Fund breakdown
+			const groupedTickers = await getFundTickerData(fundData.fund_name);
+			log(groupedTickers);
+			setProgress(65);
+
+			//! 4. Calculating Fund Data based on created date
+			const totalFundGrowth = {};
+			for (const ticker_id in groupedTickers) {
+				for (const item of groupedTickers[ticker_id]) {
+					const growthValue = convertPercentageStringToNumber(item.growth);
+					if (!totalFundGrowth[item.date]) {
+						totalFundGrowth[item.date] = 0;
+					}
+					totalFundGrowth[item.date] += growthValue * item.weightage;
+				}
+			}
+			const filteredTotalFundGrowth = Object.fromEntries(
+				Object.entries(totalFundGrowth).filter(([date]) =>
+					moment(date, "YYYY-MM-DD").isAfter(
+						moment(event.target.date.value || "2015-01-01", "YYYY-MM-DD"),
+						"month",
+					),
+				),
+			);
+			let closePrice = 10; // Base fund price
+			const closePricesByDate = {};
+			for (const date in filteredTotalFundGrowth) {
+				const growthRate = filteredTotalFundGrowth[date] / 100;
+				closePrice = closePrice * (1 + growthRate);
+				closePricesByDate[date] = closePrice;
+			}
+			//! 5. Insert fund data into fund
+			const response = await insertFundData(
+				fundData.fund_name,
+				closePricesByDate,
+			);
+			log(response);
 			setProgress(100);
 			setTimeout(() => {
 				setLoading(false);

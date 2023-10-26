@@ -24,3 +24,13 @@ export async function addTickerData(ticker) {
 	const message = await stockDataApi.addTickerData(ticker);
 	return message;
 }
+
+export async function getFundTickerData(fundName) {
+	const data = await stockDataApi.getFundTickerData(fundName);
+	if (data.error) {
+		throw new Error(data.error);
+	}
+	const groupedTickers = groupTickers("ticker_id", data);
+	calculateGrowth(groupedTickers);
+	return groupedTickers;
+}

@@ -15,3 +15,12 @@ export async function insertAsset(fundName, fundData) {
 	);
 	return response;
 }
+
+export async function insertFundData(fundName, fundData) {
+	const response = await sendRequest(
+		`${BASE_URL}/data/${fundName}`,
+		"POST",
+		fundData,
+	);
+	return response;
+}
