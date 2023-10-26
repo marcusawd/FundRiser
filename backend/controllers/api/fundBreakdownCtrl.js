@@ -81,7 +81,7 @@ const insertAsset = async (req, res) => {
 		debug("insert", rows);
 		res
 			.status(201)
-			.json({ message: `${ticker} successfully added! into ${fundName}` });
+			.json({ message: `${ticker} successfully added into ${fundName} fund!` });
 	} catch (error) {
 		res.status(500).json({ error: "Internal Server Error" });
 	}

@@ -6,12 +6,14 @@ import {
 	Container,
 	Form,
 	ListGroup,
+	ProgressBar,
 	Row,
 	Table,
 } from "react-bootstrap";
 import debug from "debug";
 import { getAllTickers } from "../../../utilities/ticker-service";
-import { createFund } from "../../../utilities/fund-service";
+import { createFund, insertAsset } from "../../../utilities/fund-service";
+import { useNavigate } from "react-router-dom";
 
 const log = debug("frontend:CreateFundPage");
 
@@ -19,6 +21,9 @@ export default function CreateFundPage() {
 	const [tickers, setTickers] = useState([]);
 	const [selectedTickers, setSelectedTickers] = useState({});
 	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [progress, setProgress] = useState(0);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		async function fetchTickers() {
@@ -51,8 +56,11 @@ export default function CreateFundPage() {
 		totalWeightage === 100 ? { color: "green" } : { color: "red" };
 
 	const handleFormSubmit = async (event) => {
-		setError("");
 		event.preventDefault();
+		setError("");
+		setLoading(true);
+		setProgress(0);
+
 		const fundData = {
 			fund_name: event.target.fundName.value,
 			description: event.target.description.value,
@@ -66,10 +74,25 @@ export default function CreateFundPage() {
 			if (totalWeightage !== 100) {
 				throw new Error("Total Weightage doesnt add to 100%");
 			}
-			const message = await createFund(fundData);
-			log(message);
+			await createFund(fundData);
+			setProgress(25);
+
+			const promises = Object.entries(selectedTickers).map(
+				([ticker, weightage]) => {
+					return insertAsset(fundData.fund_name, { ticker, weightage });
+				},
+			);
+			await Promise.all(promises);
+			setProgress(100);
+			setTimeout(() => {
+				setLoading(false);
+				setProgress(0);
+				navigate("/");
+			}, 1000);
 		} catch (error) {
 			setError(error.message);
+			setLoading(false);
+			setProgress(0);
 		}
 	};
 
@@ -167,9 +190,12 @@ export default function CreateFundPage() {
 					</Row>
 				</Container>
 
-				<Button variant="primary" type="submit" className="mb-3">
+				<Button variant="primary" type="submit" className="mb-3 me-3">
 					Submit
 				</Button>
+				{loading && (
+					<ProgressBar animated now={progress} label={`${progress}%`} />
+				)}
 			</Form>
 			{error && (
 				<Alert variant="danger" style={{ width: "90%", margin: "auto" }}>

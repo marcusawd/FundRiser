@@ -9,7 +9,7 @@ export async function createFund(fundData) {
 
 export async function insertAsset(fundName, fundData) {
 	const response = await sendRequest(
-		`${BASE_URL}/${fundName}`,
+		`${BASE_URL}/breakdown/${fundName}`,
 		"POST",
 		fundData,
 	);
