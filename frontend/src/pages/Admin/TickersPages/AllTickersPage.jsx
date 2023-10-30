@@ -24,7 +24,6 @@ export default function AllTickersPage() {
 			try {
 				const queryParams = new URLSearchParams(location.search);
 				const data = await getTickers(queryParams);
-				log(data);
 				setAllTickers(data);
 				setLoading(false);
 			} catch (error) {
@@ -33,7 +32,7 @@ export default function AllTickersPage() {
 			}
 		}
 		fetchTickers();
-	}, [page, location]);
+	}, [page, location, showModal]);
 
 	const handlePageChange = (newPage) => {
 		const queryParams = new URLSearchParams(location.search);

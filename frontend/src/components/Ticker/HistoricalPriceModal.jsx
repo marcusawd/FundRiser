@@ -1,6 +1,14 @@
-import { Button, Modal, Pagination, Table } from "react-bootstrap";
+import {
+	Alert,
+	Button,
+	Modal,
+	Pagination,
+	Spinner,
+	Table,
+} from "react-bootstrap";
 import moment from "moment";
 import { useState } from "react";
+import { addTickerData } from "../../utilities/stockData-service";
 
 export default function HistoricalPriceModal({
 	show,
@@ -8,11 +16,27 @@ export default function HistoricalPriceModal({
 	tickerData,
 }) {
 	const [page, setPage] = useState(1);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState("");
+	const ticker = tickerData[0].ticker_name;
+
 	const itemsPerPage = 12;
 	const totalPages = Math.ceil(tickerData?.length / itemsPerPage);
 	const startIndex = (page - 1) * itemsPerPage;
 	const endIndex = page * itemsPerPage;
 	const currentItems = tickerData?.slice(startIndex, endIndex);
+
+	const handleFetch = async () => {
+		setLoading(true);
+
+		const response = await addTickerData(ticker);
+		if (response.message) {
+			handleClose();
+		} else if (response.error) {
+			setError(response.error);
+		}
+		setLoading(false);
+	};
 
 	return (
 		<>
@@ -20,7 +44,7 @@ export default function HistoricalPriceModal({
 				<Modal.Header closeButton>
 					<Modal.Title>
 						{tickerData && tickerData.length > 0
-							? `${tickerData[0].ticker_name} Adjusted Historical Price`
+							? `${ticker} Adjusted Historical Price`
 							: "Loading..."}
 					</Modal.Title>
 				</Modal.Header>
@@ -63,6 +87,16 @@ export default function HistoricalPriceModal({
 					</Pagination>
 				</Modal.Body>
 				<Modal.Footer>
+					{error && <Alert variant="danger">{error}</Alert>}
+					{loading && (
+						<Spinner
+							animation="border"
+							variant="success"
+							role="status"></Spinner>
+					)}
+					<Button variant="info" onClick={handleFetch}>
+						Get Latest Data
+					</Button>
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
