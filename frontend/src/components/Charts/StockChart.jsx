@@ -26,7 +26,7 @@ export default function StockChart({ data }) {
 	return (
 		<>
 			<ResponsiveContainer width="100%" height={200}>
-				<LineChart data={data} margin={{ left: -20 }}>
+				<LineChart data={data}>
 					<XAxis
 						dataKey="date"
 						tickFormatter={(date) => moment(date).format("MMM YY")}
