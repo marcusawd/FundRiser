@@ -12,6 +12,7 @@ import AllTickersPage from "../Admin/TickersPages/AllTickersPage";
 import CreateFundPage from "../Admin/FundPages/CreateFundPage";
 import AllFundsPage from "./FundPages/AllFundsPage";
 import OneFundPage from "./FundPages/OneFundPage";
+import TransfersPage from "../User/TransfersPage";
 
 const log = debug("frontend:App");
 localStorage.debug = "frontend:*";
@@ -36,7 +37,10 @@ export default function App() {
 				) : null}
 
 				{user && user.role === "user" ? (
-					<Route path="/profile" element={<UserDashboardPage />} />
+					<>
+						<Route path="/profile" element={<UserDashboardPage />} />
+						<Route path="/transfers" element={<TransfersPage />} />
+					</>
 				) : null}
 
 				<Route path="/*" element={<LandingPage />} />
