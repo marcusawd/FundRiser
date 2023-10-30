@@ -15,6 +15,14 @@ CREATE TABLE fund (
   created_at DATE DEFAULT CURRENT_TIMESTAMP
 );
 -- DROP TABLE fund
+-- fund_data table
+CREATE TABLE fund_data (
+  fund_data_id SERIAL PRIMARY KEY,
+  fund_id INT NOT NULL REFERENCES fund(fund_id) ON DELETE CASCADE,
+  date DATE,
+  close_price DECIMAL(10, 2)
+);
+-- DROP TABLE fund_data
 -- user_fund table
 CREATE TABLE user_fund (
   user_fund_id SERIAL PRIMARY KEY,
@@ -48,24 +56,21 @@ CREATE TABLE stock_data (
 -- transaction_type table
 CREATE TABLE transaction_type (
   tx_type_id SERIAL PRIMARY KEY,
-  tx_name VARCHAR(255) NOT NULL
+  tx_name VARCHAR(255) NOT NULL UNIQUE
 );
+INSERT INTO transaction_type(tx_name) VALUES('Deposit')
+INSERT INTO transaction_type(tx_name) VALUES('Withdrawal')
+INSERT INTO transaction_type(tx_name) VALUES('Buy Fund')
+INSERT INTO transaction_type(tx_name) VALUES('Sell Fund')
 -- DROP TABLE transaction_type
 -- transaction table
 CREATE TABLE transactions (
   tx_id SERIAL PRIMARY KEY,
-  user_id INT NOT NULL REFERENCES users(user_id),
-  tx_type_id INT NOT NULL REFERENCES transaction_type(tx_type_id),
+  user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+  tx_type_id INT NOT NULL REFERENCES transaction_type(tx_type_id) ON DELETE CASCADE,
   amount DECIMAL(10, 2),
   date DATE,
-  fund_id INT REFERENCES fund(fund_id)
+  fund_id INT REFERENCES fund(fund_id) ON DELETE CASCADE,
+  share_count INT
 );
 -- DROP TABLE transactions
--- fund_data table
-CREATE TABLE fund_data (
-  fund_data_id SERIAL PRIMARY KEY,
-  fund_id INT NOT NULL REFERENCES fund(fund_id) ON DELETE CASCADE,
-  date DATE,
-  close_price DECIMAL(10, 2)
-);
--- DROP TABLE fund_data

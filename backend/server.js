@@ -11,6 +11,7 @@ const usersRouter = require("./routes/api/usersRoutes");
 const fundRouter = require("./routes/api/fundRoutes");
 const stockDataRouter = require("./routes/api/stockDataRoutes");
 const tickerRouter = require("./routes/api/tickerRoutes");
+const transactionRouter = require("./routes/api/transactionRoutes");
 const checkTokenMiddleware = require("./config/checkToken");
 
 //* app
@@ -28,6 +29,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/fund", fundRouter);
 app.use("/api/stockData", stockDataRouter);
 app.use("/api/ticker", tickerRouter);
+app.use("/api/transaction", transactionRouter);
 
 //? Catch all routes
 app.get("/*", (req, res) => {
