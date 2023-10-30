@@ -24,3 +24,8 @@ export async function insertFundData(fundName, fundData) {
 	);
 	return response;
 }
+
+export async function getAllFundData() {
+	const response = await sendRequest(BASE_URL);
+	return response;
+}

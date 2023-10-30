@@ -29,4 +29,15 @@ const insertFundData = async (req, res) => {
 	});
 };
 
-module.exports = { insertFundData };
+const getAllFundData = async (req, res) => {
+	const query =
+		"SELECT f.fund_name, f.description, fd.close_price, fd.date FROM fund_data fd JOIN fund f on f.fund_id = fd.fund_id";
+	try {
+		const { rows } = await pool.query(query);
+		res.json(rows);
+	} catch (error) {
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+
+module.exports = { insertFundData, getAllFundData };

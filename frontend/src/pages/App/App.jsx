@@ -1,6 +1,6 @@
 import debug from "debug";
 import { useContext, useState } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 import { AdminDashboardPage } from "../Admin/AdminDashboardPage";
 import LoginPage from "../AuthPage/LoginPage";
@@ -8,9 +8,10 @@ import { UserContext } from "../../hooks/UserProvider";
 import UserDashboardPage from "../User/UserDashboardPage";
 import SignupPage from "../AuthPage/SignupPage";
 import LandingPage from "./LandingPage";
-import Unauthorized from "../AuthPage/UnauthorizedPage";
 import AllTickersPage from "../Admin/TickersPages/AllTickersPage";
 import CreateFundPage from "../Admin/FundPages/CreateFundPage";
+import AllFundsPage from "./FundPages/AllFundsPage";
+import OneFundPage from "./FundPages/OneFundPage";
 
 const log = debug("frontend:App");
 localStorage.debug = "frontend:*";
@@ -39,7 +40,8 @@ export default function App() {
 				) : null}
 
 				<Route path="/*" element={<LandingPage />} />
-				<Route path="/unauthorized" element={<Unauthorized />} />
+				<Route path="/funds" element={<AllFundsPage />} />
+				<Route path="/funds/:fundName" element={<OneFundPage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/signup" element={<SignupPage />} />
 			</Routes>

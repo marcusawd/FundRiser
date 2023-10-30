@@ -39,7 +39,7 @@ export default function NavBar() {
 							)
 						) : (
 							<Nav className="me-auto">
-								<Nav.Link onClick={() => navigate("/courses")}>Funds</Nav.Link>
+								<Nav.Link onClick={() => navigate("/funds")}>Funds</Nav.Link>
 								<Nav.Link onClick={() => navigate("/signup")}>Sign Up</Nav.Link>
 								<Nav.Link onClick={() => navigate("/login")}>Log In</Nav.Link>
 							</Nav>

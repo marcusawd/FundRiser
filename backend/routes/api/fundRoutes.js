@@ -8,5 +8,6 @@ router.post("/", fundCtrl.createFund);
 router.patch("/:fundName", fundCtrl.renameFund);
 router.post("/breakdown/:fundName", fundBreakdownCtrl.insertAsset);
 router.post("/data/:fundName", fundDataCtrl.insertFundData);
+router.get("/", fundDataCtrl.getAllFundData);
 
 module.exports = router;
