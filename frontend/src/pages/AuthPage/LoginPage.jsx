@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
-import { login } from "../../utilities/users-service";
+import { login } from "../../utilities/User/users-service";
 import { UserContext } from "../../hooks/UserProvider";
 import debug from "debug";
 

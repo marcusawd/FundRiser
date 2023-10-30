@@ -10,13 +10,13 @@ import {
 	ProgressBar,
 	Row,
 } from "react-bootstrap";
-import { getAllTickers } from "../../../utilities/ticker-service";
+import { getAllTickers } from "../../../utilities/Ticker/ticker-service";
 import {
 	createFund,
 	insertAsset,
 	insertFundData,
-} from "../../../utilities/fund-service";
-import { getFundTickerData } from "../../../utilities/stockData-service";
+} from "../../../utilities/Fund/fund-service";
+import { getFundTickerData } from "../../../utilities/StockData/stockData-service";
 import { convertPercentageStringToNumber } from "../../../helper/calculateGrowth";
 import SelectedTickersTable from "../../../components/Fund/SelectedTickersTable";
 import SelectTickerList from "../../../components/Fund/SelectTickerList";

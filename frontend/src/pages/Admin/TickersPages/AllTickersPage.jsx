@@ -3,7 +3,7 @@ import { Container, Pagination, Spinner, Table } from "react-bootstrap";
 import HistoricalPriceModal from "../../../components/Ticker/HistoricalPriceModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import debug from "debug";
-import { getTickers } from "../../../utilities/stockData-service";
+import { getTickers } from "../../../utilities/StockData/stockData-service";
 import TickerInputForm from "../../../components/Ticker/TickerInputForm";
 import StockChart from "../../../components/Charts/StockChart";
 

@@ -3,7 +3,7 @@ import { UserContext } from "../../hooks/UserProvider";
 import { useNavigate } from "react-router-dom";
 import debug from "debug";
 import { Button } from "react-bootstrap";
-import { getFundTickerData } from "../../utilities/stockData-service";
+import { getFundTickerData } from "../../utilities/StockData/stockData-service";
 import { convertPercentageStringToNumber } from "../../helper/calculateGrowth";
 
 const log = debug("frontend:AdminDashboard");

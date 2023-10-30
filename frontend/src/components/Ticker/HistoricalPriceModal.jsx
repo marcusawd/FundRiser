@@ -8,7 +8,7 @@ import {
 } from "react-bootstrap";
 import moment from "moment";
 import { useState } from "react";
-import { addTickerData } from "../../utilities/stockData-service";
+import { addTickerData } from "../../utilities/StockData/stockData-service";
 
 export default function HistoricalPriceModal({
 	show,

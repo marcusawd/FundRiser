@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { signUp } from "../../utilities/users-service";
+import { signUp } from "../../utilities/User/users-service";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { UserContext } from "../../hooks/UserProvider";

@@ -1,4 +1,4 @@
-import { groupTickers } from "../helper/groupTickers";
+import { groupTickers } from "../../helper/groupTickers";
 import * as fundApi from "./fund-api";
 
 export async function createFund(fundData) {

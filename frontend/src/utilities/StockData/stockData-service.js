@@ -1,5 +1,5 @@
-import { calculateGrowth } from "../helper/calculateGrowth";
-import { groupTickers } from "../helper/groupTickers";
+import { calculateGrowth } from "../../helper/calculateGrowth";
+import { groupTickers } from "../../helper/groupTickers";
 import * as stockDataApi from "./stockData-api";
 
 import debug from "debug";

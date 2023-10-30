@@ -1,4 +1,4 @@
-import sendRequest from "./sendRequest";
+import sendRequest from "../sendRequest";
 
 const BASE_URL = "/api/fund";
 

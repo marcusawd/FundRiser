@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { logOut } from "../../utilities/users-service";
+import { logOut } from "../../utilities/User/users-service";
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../hooks/UserProvider";

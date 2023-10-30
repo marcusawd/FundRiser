@@ -1,4 +1,4 @@
-import sendRequest from "./sendRequest";
+import sendRequest from "../sendRequest";
 import debug from "debug";
 
 const log = debug("frontend:stockData-api");

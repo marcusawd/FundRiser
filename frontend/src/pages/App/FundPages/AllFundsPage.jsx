@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { getAllFundData } from "../../../utilities/fund-service";
+import { getAllFundData } from "../../../utilities/Fund/fund-service";
 import FundCard from "../../../components/Fund/FundCard";
 import debug from "debug";
 

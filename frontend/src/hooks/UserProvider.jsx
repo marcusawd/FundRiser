@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getUser } from "../utilities/users-service";
+import { getUser } from "../utilities/User/users-service";
 import debug from "debug";
 
 const log = debug("frontend:UserProvider");
