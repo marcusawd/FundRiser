@@ -137,7 +137,7 @@ export default function CreateFundPage() {
 			setTimeout(() => {
 				setLoading(false);
 				setProgress(0);
-				navigate("/");
+				navigate("/funds");
 			}, 1000);
 		} catch (error) {
 			setError(error.message);

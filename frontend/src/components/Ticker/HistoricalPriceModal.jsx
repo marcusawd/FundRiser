@@ -18,7 +18,7 @@ export default function HistoricalPriceModal({
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
-	const ticker = tickerData[0].ticker_name;
+	const ticker = tickerData[0].ticker_name ?? null;
 
 	const itemsPerPage = 12;
 	const totalPages = Math.ceil(tickerData?.length / itemsPerPage);

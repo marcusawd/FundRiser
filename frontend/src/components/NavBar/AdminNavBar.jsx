@@ -9,6 +9,18 @@ export default function AdminNavBar({ user, handleLogout }) {
 				<Navbar.Text>Welcome back, {user.name}!</Navbar.Text>
 			</Navbar.Collapse>
 			<NavDropdown
+				title="Fund"
+				id="basic-nav-dropdown"
+				style={{ marginRight: "30px" }}>
+				<NavDropdown.Item onClick={() => navigate("/funds")}>
+					Fund List
+				</NavDropdown.Item>
+				<NavDropdown.Divider />
+				<NavDropdown.Item onClick={() => navigate("/admin/fund/create")}>
+					Create Fund
+				</NavDropdown.Item>
+			</NavDropdown>
+			<NavDropdown
 				title="Admin"
 				id="basic-nav-dropdown"
 				style={{ marginRight: "30px" }}>
@@ -18,10 +30,6 @@ export default function AdminNavBar({ user, handleLogout }) {
 				<NavDropdown.Divider />
 				<NavDropdown.Item onClick={() => navigate("/admin/tickers")}>
 					Ticker List
-				</NavDropdown.Item>
-				<NavDropdown.Divider />
-				<NavDropdown.Item onClick={() => navigate("/admin/fund/create")}>
-					Create Fund
 				</NavDropdown.Item>
 			</NavDropdown>
 			<NavDropdown title="Your Account" id="basic-nav-dropdown">

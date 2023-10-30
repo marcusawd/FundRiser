@@ -18,7 +18,6 @@ export default function AllTickersPage() {
 	const [page, setPage] = useState(1);
 	const [allTickers, setAllTickers] = useState({});
 
-	// Todo - Add a formSubmitted state change to the addTicker and the Modal (If you are gonna add an update button)
 	useEffect(() => {
 		async function fetchTickers() {
 			try {

@@ -5,7 +5,7 @@ export default function SelectTickerList({ tickers, handleAddTicker }) {
 		<Col>
 			<Form.Group controlId="selectTicker">
 				<Form.Label>Select Ticker:</Form.Label>
-				<ListGroup>
+				<ListGroup style={{ maxHeight: "280px", overflowY: "auto" }}>
 					{tickers?.map((ticker) => (
 						<ListGroup.Item key={ticker}>
 							{ticker}
