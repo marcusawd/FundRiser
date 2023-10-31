@@ -75,3 +75,9 @@ CREATE TABLE transactions (
   share_count INT
 );
 -- DROP TABLE transactions
+CREATE TABLE balance (
+  balance_id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+  date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  cash_balance DECIMAL
+)

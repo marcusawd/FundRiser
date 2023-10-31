@@ -25,16 +25,27 @@ const create = async (req, res) => {
 	}
 	const role = data.role ? data.role : "user";
 	const hashedPassword = await bcrypt.hash(data.password, 10);
-	const query = {
-		text: "INSERT INTO users(name, email, password, role) VALUES($1, $2, $3, $4) RETURNING*",
-		values: [data.name, data.email, hashedPassword, role],
-	};
+	const client = await pool.connect();
 	try {
-		const result = await pool.query(query);
+		await client.query("BEGIN");
+
+		const query = {
+			text: "INSERT INTO users(name, email, password, role) VALUES($1, $2, $3, $4) RETURNING*",
+			values: [data.name, data.email, hashedPassword, role],
+		};
+		const result = await client.query(query);
+		const { user_id, created_at } = result.rows[0];
+
 		const token = createJWT(result.rows[0]);
+		const balanceQuery = {
+			text: "INSERT INTO balance(user_id, date, cash_balance) VALUES($1, $2, $3)",
+			values: [user_id, created_at, 0],
+		};
+		await client.query(balanceQuery);
+		await client.query("COMMIT");
 		res.status(201).json({ token });
 	} catch (error) {
-		debug("error: ", error);
+		await client.query("ROLLBACK");
 		if (error.code === "23505" && error.constraint === "users_email_key") {
 			res
 				.status(409)
@@ -42,6 +53,8 @@ const create = async (req, res) => {
 		} else {
 			res.status(500).json({ error: "Internal Server Error" });
 		}
+	} finally {
+		client.release();
 	}
 };
 
