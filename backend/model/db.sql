@@ -28,7 +28,8 @@ CREATE TABLE user_fund (
   user_fund_id SERIAL PRIMARY KEY,
   user_id INT NOT NULL REFERENCES users(user_id),
   fund_id INT NOT NULL REFERENCES fund(fund_id),
-  fund_share_count INT
+  fund_share_count INT,
+  average_price DECIMAL(10,2)
 );
 -- DROP TABLE user_fund
 -- ticker table
@@ -69,7 +70,7 @@ CREATE TABLE transactions (
   user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   tx_type_id INT NOT NULL REFERENCES transaction_type(tx_type_id) ON DELETE CASCADE,
   amount DECIMAL(10, 2),
-  date DATE,
+  date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   fund_id INT REFERENCES fund(fund_id) ON DELETE CASCADE,
   share_count INT
 );
