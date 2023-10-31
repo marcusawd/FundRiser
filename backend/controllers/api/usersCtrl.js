@@ -4,9 +4,9 @@ const pool = require("../../config/database");
 const debug = require("debug")("backend:usersCtrl");
 
 const createJWT = (user) => {
-	const { id, name, email, role } = user;
+	const { user_id, name, email, role } = user;
 	const payload = {
-		id,
+		user_id,
 		name,
 		email,
 		role,
