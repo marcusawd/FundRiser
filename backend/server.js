@@ -15,6 +15,7 @@ const transactionRouter = require("./routes/api/transactionRoutes");
 const balanceRouter = require("./routes/api/balanceRoutes");
 const checkTokenMiddleware = require("./config/checkToken");
 const ensureUser = require("./config/ensureUser");
+const ensureAdmin = require("./config/ensureAdmin");
 
 //* app
 const app = express();
@@ -29,8 +30,8 @@ app.use(checkTokenMiddleware);
 //* routes
 app.use("/api/users", usersRouter);
 app.use("/api/fund", fundRouter);
-app.use("/api/stockData", stockDataRouter);
-app.use("/api/ticker", tickerRouter);
+app.use("/api/stockData", ensureAdmin, stockDataRouter);
+app.use("/api/ticker", ensureAdmin, tickerRouter);
 app.use("/api/transaction", ensureUser, transactionRouter);
 app.use("/api/balance", ensureUser, balanceRouter);
 
