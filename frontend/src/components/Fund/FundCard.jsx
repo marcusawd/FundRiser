@@ -6,7 +6,7 @@ export default function FundCard({ fund }) {
 	console.log(fund);
 	const navigate = useNavigate();
 	return (
-		<Card border="success" className="d-flex flex-column h-100 mb-3">
+		<Card border="info" className="d-flex flex-column h-100 mb-3">
 			<Card.Header>{fund[0].fund_name}</Card.Header>
 			<Card.Body>
 				<StockChart data={fund} dot={false} />
@@ -15,7 +15,7 @@ export default function FundCard({ fund }) {
 			</Card.Body>
 			<Card.Footer className="d-flex justify-content-center">
 				<Button
-					variant="outline-success"
+					variant="outline-info"
 					onClick={() =>
 						navigate(`/funds/${fund[0].fund_name}`, { state: fund })
 					}>

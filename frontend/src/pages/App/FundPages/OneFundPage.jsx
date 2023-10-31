@@ -33,7 +33,7 @@ export default function OneFundPage() {
 	};
 
 	return (
-		<>
+		<div style={{ width: "90%", margin: "0 auto" }}>
 			<StockChart data={fund} height={400} strokeColor="blue" />
 			<div>{fundName}</div>
 			<ButtonGroup aria-label="Basic example" onClick={handleClick}>
@@ -50,6 +50,6 @@ export default function OneFundPage() {
 				purchase={purchase}
 				fundName={fundName}
 			/>
-		</>
+		</div>
 	);
 }

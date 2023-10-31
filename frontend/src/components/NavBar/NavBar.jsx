@@ -23,7 +23,7 @@ export default function NavBar() {
 				<Container>
 					<Link to="/">
 						<img
-							src="https://i.imgur.com/ih08rsx.png"
+							src="../../../Fundriser.png"
 							width="auto"
 							height="75"
 							style={{ marginRight: "20px" }}
