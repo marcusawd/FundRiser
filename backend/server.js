@@ -13,6 +13,7 @@ const stockDataRouter = require("./routes/api/stockDataRoutes");
 const tickerRouter = require("./routes/api/tickerRoutes");
 const transactionRouter = require("./routes/api/transactionRoutes");
 const checkTokenMiddleware = require("./config/checkToken");
+const ensureUser = require("./config/ensureUser");
 
 //* app
 const app = express();
@@ -29,7 +30,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/fund", fundRouter);
 app.use("/api/stockData", stockDataRouter);
 app.use("/api/ticker", tickerRouter);
-app.use("/api/transaction", transactionRouter);
+app.use("/api/transaction", ensureUser, transactionRouter);
 
 //? Catch all routes
 app.get("/*", (req, res) => {
