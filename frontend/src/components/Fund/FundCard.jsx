@@ -9,7 +9,7 @@ export default function FundCard({ fund }) {
 		<Card border="success" className="d-flex flex-column h-100 mb-3">
 			<Card.Header>{fund[0].fund_name}</Card.Header>
 			<Card.Body>
-				<StockChart data={fund} />
+				<StockChart data={fund} dot={false} />
 
 				<Card.Text>{fund[0].description}</Card.Text>
 			</Card.Body>

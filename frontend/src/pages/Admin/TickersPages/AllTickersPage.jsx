@@ -72,7 +72,15 @@ export default function AllTickersPage() {
 					{Object.keys(allTickers.groupedTickers)?.map((ticker) => (
 						<tr key={ticker} onClick={() => handleRowClick(ticker)}>
 							<td>{ticker}</td>
-							<td>{<StockChart data={allTickers.groupedTickers[ticker]} />}</td>
+							<td>
+								{
+									<StockChart
+										data={allTickers.groupedTickers[ticker]}
+										strokeColor="green"
+										height={250}
+									/>
+								}
+							</td>
 						</tr>
 					))}
 				</tbody>
