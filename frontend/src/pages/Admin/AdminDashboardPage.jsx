@@ -14,28 +14,13 @@ export function AdminDashboardPage() {
 
 	const handleClick = async () => {
 		try {
-			const groupedTickers = await getFundTickerData("65465");
-			const totalFundGrowth = {};
-			for (const ticker_id in groupedTickers) {
-				for (const item of groupedTickers[ticker_id]) {
-					const growthValue = convertPercentageStringToNumber(item.growth);
-					if (!totalFundGrowth[item.date]) {
-						totalFundGrowth[item.date] = 0;
-					}
-					totalFundGrowth[item.date] += growthValue * item.weightage;
-				}
-			}
-			log(groupedTickers);
-			log(totalFundGrowth);
-		} catch (error) {
-			log(error.message);
-		}
+		} catch (error) {}
 	};
 
 	return (
 		<div>
 			<div>Welcome {user?.name}</div>
-			<Button onClick={handleClick}>TEST</Button>
+			<Button onClick={handleClick}>Compile Balances of All Users</Button>
 		</div>
 	);
 }

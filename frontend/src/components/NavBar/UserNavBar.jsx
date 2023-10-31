@@ -20,6 +20,10 @@ export default function UserNavBar({ user, handleLogout }) {
 				</NavDropdown.Item> */}
 			</NavDropdown>
 			<NavDropdown title="Your Account" id="basic-nav-dropdown">
+				<NavDropdown.Item onClick={() => navigate("/profile")}>
+					Profile
+				</NavDropdown.Item>
+				<NavDropdown.Divider />
 				<NavDropdown.Item onClick={() => navigate("/transfers")}>
 					Transfers
 				</NavDropdown.Item>
