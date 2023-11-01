@@ -12,7 +12,7 @@ const createJWT = (user) => {
 		role,
 	};
 	return jwt.sign({ user: payload }, process.env.SECRET, {
-		expiresIn: "15m",
+		expiresIn: "45m",
 	});
 };
 
