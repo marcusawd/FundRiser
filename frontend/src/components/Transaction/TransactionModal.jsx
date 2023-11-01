@@ -37,6 +37,7 @@ export default function TransactionModal({
 		});
 		setBalance(parseFloat(total.toFixed(2)));
 		setShareCount(count);
+		setStatus({ success: "", error: "" });
 	}, [txHistory, fundName]);
 
 	const mostRecentPrice = fund ? fund[fund.length - 1].close_price : 0;
@@ -58,7 +59,9 @@ export default function TransactionModal({
 				const message = await sellFund(data);
 				setStatus({ success: message.message, error: "" });
 			}
-			setFetched(false);
+			setTimeout(() => {
+				setFetched(false);
+			}, 2000);
 		} catch (error) {
 			setStatus({ success: "", error: error.message });
 		}
