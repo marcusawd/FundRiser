@@ -39,7 +39,7 @@ export default function App() {
 
 					{user && user.role === "user" ? (
 						<>
-							<Route path="/profile" element={<UserDashboardPage />} />
+							<Route path="/dashboard" element={<UserDashboardPage />} />
 							<Route path="/transfers" element={<TransfersPage />} />
 						</>
 					) : null}

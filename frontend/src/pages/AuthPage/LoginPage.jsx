@@ -29,7 +29,7 @@ export default function LoginPage() {
 			if (user.role === "admin") {
 				navigate("/admin");
 			} else {
-				navigate("/profile");
+				navigate("/dashboard");
 			}
 		} catch (error) {
 			setError("Log In Failed - Try Again");
