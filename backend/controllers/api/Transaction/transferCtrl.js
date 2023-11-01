@@ -36,4 +36,19 @@ const withdraw = async (req, res) => {
 	}
 };
 
-module.exports = { deposit, withdraw };
+const getHistory = async (req, res) => {
+	const { user_id } = req.user;
+	const query = `SELECT tt.tx_name, t.amount, t.date, f.fund_name, t.share_count
+    FROM transactions t
+    JOIN transaction_type tt ON t.tx_type_id = tt.tx_type_id
+    LEFT JOIN fund f ON f.fund_id = t.fund_id
+    WHERE t.user_id = $1;`;
+	try {
+		const data = await pool.query(query, [user_id]);
+		res.json(data.rows);
+	} catch (error) {
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+};
+
+module.exports = { deposit, withdraw, getHistory };

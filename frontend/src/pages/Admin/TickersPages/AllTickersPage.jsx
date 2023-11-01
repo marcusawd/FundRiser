@@ -18,6 +18,8 @@ export default function AllTickersPage() {
 	const [page, setPage] = useState(1);
 	const [allTickers, setAllTickers] = useState({});
 
+	//TODO Add a user === admin and then they will see a delete button. This will delete a ticker. Check what happens when you delete a ticker that is being used by a fund
+
 	useEffect(() => {
 		async function fetchTickers() {
 			try {

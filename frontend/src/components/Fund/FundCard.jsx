@@ -5,6 +5,8 @@ import StockChart from "../Charts/StockChart";
 export default function FundCard({ fund }) {
 	console.log(fund);
 	const navigate = useNavigate();
+	//TODO Add a user === admin and then they will see a delete button. This will delete a fund. (Make sure that only funds that are not owned can be deleted)
+
 	return (
 		<Card border="info" className="d-flex flex-column h-100 mb-3">
 			<Card.Header>{fund[0].fund_name}</Card.Header>

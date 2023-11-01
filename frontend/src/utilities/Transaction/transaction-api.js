@@ -19,3 +19,8 @@ export async function withdrawFunds(amount) {
 	);
 	return message;
 }
+
+export async function getHistory() {
+	const response = await sendRequest(BASE_URL);
+	return response;
+}

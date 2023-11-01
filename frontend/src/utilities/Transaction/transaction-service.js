@@ -9,3 +9,8 @@ export async function withdrawFunds(amount) {
 	const message = await transactionApi.withdrawFunds(amount);
 	return message;
 }
+
+export async function getHistory() {
+	const response = await transactionApi.getHistory();
+	return response;
+}
