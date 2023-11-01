@@ -1,8 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Alert, Button, Modal } from "react-bootstrap";
 import { UserContext } from "../../hooks/UserProvider";
 
 import debug from "debug";
+import {
+	buyFund,
+	sellFund,
+} from "../../utilities/Transaction/transaction-service";
 const log = debug("frontend:TranscationModal");
 
 export default function TransactionModal({
@@ -16,6 +20,7 @@ export default function TransactionModal({
 	const [balance, setBalance] = useState(0);
 	const [shareCount, setShareCount] = useState(0);
 	const [quantity, setQuantity] = useState(0);
+	const [status, setStatus] = useState({ success: "", error: "" });
 
 	useEffect(() => {
 		let total = 0;
@@ -30,19 +35,35 @@ export default function TransactionModal({
 				}
 			}
 		});
-		setBalance(total);
+		setBalance(parseFloat(total.toFixed(2)));
 		setShareCount(count);
 	}, [txHistory, fundName]);
 
 	const mostRecentPrice = fund ? fund[fund.length - 1].close_price : 0;
-	const totalPrice = mostRecentPrice * quantity;
+	const totalPrice = (mostRecentPrice * quantity).toFixed(2);
+	const canBuy = balance >= totalPrice;
+	const canSell = shareCount >= quantity;
 
 	const handleQuantityChange = (e) => {
 		setQuantity(e.target.value);
 	};
 
-	const canBuy = balance >= totalPrice;
-	const canSell = shareCount >= quantity;
+	const handlePurchase = async () => {
+		try {
+			const data = { fundName, shareCount: quantity, amount: totalPrice };
+			if (purchase) {
+				const message = await buyFund(data);
+				setStatus({ success: message.message, error: "" });
+			} else {
+				const message = await sellFund(data);
+				setStatus({ success: message.message, error: "" });
+			}
+			setFetched(false);
+		} catch (error) {
+			setStatus({ success: "", error: error.message });
+		}
+	};
+
 	return (
 		<>
 			<Modal show={show} onHide={handleClose}>
@@ -67,17 +88,25 @@ export default function TransactionModal({
 
 				<Modal.Footer>
 					{purchase ? (
-						<Button variant="success" disabled={!canBuy}>
+						<Button
+							variant="success"
+							disabled={!canBuy}
+							onClick={handlePurchase}>
 							Buy
 						</Button>
 					) : (
-						<Button variant="danger" disabled={!canSell}>
+						<Button
+							variant="danger"
+							disabled={!canSell}
+							onClick={handlePurchase}>
 							Sell
 						</Button>
 					)}
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
+					{status.success && <Alert variant="success">{status.success}</Alert>}
+					{status.error && <Alert variant="danger">{status.error}</Alert>}
 				</Modal.Footer>
 			</Modal>
 		</>

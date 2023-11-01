@@ -33,7 +33,7 @@ const buyFund = async (req, res) => {
 			shareCount,
 		]);
 		res.json({
-			message: `${shareCount} of ${fundName} purchased for $${amount}`,
+			message: `${shareCount} shares of ${fundName} purchased for $${amount}`,
 		});
 		client.query("COMMIT");
 	} catch (error) {

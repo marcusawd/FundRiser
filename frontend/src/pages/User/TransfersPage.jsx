@@ -64,8 +64,8 @@ export default function TransfersPage() {
 					WITHDRAW
 				</Button>
 			</Form>
-			{status.success && <Alert>{status.success}</Alert>}
-			{status.error && <Alert>{status.error}</Alert>}
+			{status.success && <Alert variant="success">{status.success}</Alert>}
+			{status.error && <Alert variant="danger">{status.error}</Alert>}
 		</div>
 	);
 }
