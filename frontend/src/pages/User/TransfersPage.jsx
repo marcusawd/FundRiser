@@ -1,15 +1,27 @@
 import { Alert, Button, Form } from "react-bootstrap";
-import debug from "debug";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../hooks/UserProvider";
 import {
 	depositFunds,
 	withdrawFunds,
 } from "../../utilities/Transaction/transaction-service";
+import debug from "debug";
 
 const log = debug("frontend:TransfersPage");
 
 export default function TransfersPage() {
+	const { txHistory, setFetched } = useContext(UserContext);
 	const [status, setStatus] = useState({ success: "", error: "" });
+	const [balance, setBalance] = useState(0);
+
+	useEffect(() => {
+		let total = 0;
+		txHistory.forEach((tx) => {
+			total += parseFloat(tx.amount);
+		});
+		setBalance(total);
+	}, [txHistory]);
+
 	const handleFormSubmit = async (e) => {
 		setStatus({ success: "", error: "" });
 		e.preventDefault();
@@ -28,12 +40,15 @@ export default function TransfersPage() {
 				const response = await withdrawFunds({ withdraw });
 				log(response);
 			}
+			setFetched(false);
 		} catch (error) {
 			setStatus({ success: "", error: error.message });
 		}
 	};
 	return (
 		<div style={{ width: "90%", margin: "0 auto", maxWidth: "500px" }}>
+			<div>Cash Balance: {balance}</div>
+			<br />
 			<Form onSubmit={handleFormSubmit}>
 				<Form.Group className="mb-3" controlId="deposit">
 					<Form.Label>Deposit Amount</Form.Label>
