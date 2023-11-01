@@ -23,12 +23,12 @@ export default function TransactionHistory({ txHistory }) {
 	);
 }
 
-const renderGrid = (tx) => {
+const renderGrid = (tx, index) => {
 	return (
-		<tbody>
+		<tbody key={index}>
 			<tr>
-				{Object.keys(tx)?.map((key, index) => (
-					<td key={index}>
+				{Object.keys(tx)?.map((key, i) => (
+					<td key={i}>
 						{key === "date" ? moment(tx[key]).format("DD-MMM-YY") : tx[key]}
 					</td>
 				))}
