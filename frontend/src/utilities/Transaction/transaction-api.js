@@ -20,6 +20,16 @@ export async function withdrawFunds(amount) {
 	return message;
 }
 
+export async function buyFund(data) {
+	const response = await sendRequest(`${BASE_URL}/buyfund`, "POST", data);
+	return response;
+}
+
+export async function sellFund(data) {
+	const response = await sendRequest(`${BASE_URL}/sellfund`, "POST", data);
+	return response;
+}
+
 export async function getHistory() {
 	const response = await sendRequest(BASE_URL);
 	return response;
