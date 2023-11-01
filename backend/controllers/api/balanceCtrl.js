@@ -14,4 +14,9 @@ const getBalance = async (req, res) => {
 	}
 };
 
+const computeBalance = async (req, res) => {
+	// TODO At the end of each month, grab all the data from the month that just passed. Which means you need the month date in req.body
+	//* Create a post
+};
+
 module.exports = { getBalance };
