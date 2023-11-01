@@ -16,7 +16,7 @@ export default function TransfersPage() {
 
 	useEffect(() => {
 		let total = 0;
-		txHistory.forEach((tx) => {
+		txHistory?.forEach((tx) => {
 			total += parseFloat(tx.amount);
 		});
 		setBalance(total);
@@ -32,15 +32,14 @@ export default function TransfersPage() {
 			if (deposit && withdraw) {
 				throw new Error("Cannot deposit and withdraw at the same time");
 			} else if (deposit) {
-				log(e.target.deposit.value);
 				const response = await depositFunds({ deposit });
-				log(response);
+				setStatus({ ...status, success: response.message });
 			} else if (withdraw) {
-				log(e.target.withdraw.value);
 				const response = await withdrawFunds({ withdraw });
-				log(response);
+				setStatus({ ...status, success: response.message });
 			}
 			setFetched(false);
+			e.target.reset();
 		} catch (error) {
 			setStatus({ success: "", error: error.message });
 		}
