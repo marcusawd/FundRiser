@@ -1,13 +1,17 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../hooks/UserProvider";
 import TransactionHistory from "../../components/Transaction/TransactionHistory";
+import { getHistory } from "../../utilities/Transaction/transaction-service";
 
 export default function UserDashboardPage() {
 	const { user } = useContext(UserContext);
+	const [txHistory, setTxHistory] = useState();
+
 	useEffect(() => {
 		async function fetchHistory() {
 			try {
-				// const txHistory
+				const data = await getHistory();
+				setTxHistory(data);
 			} catch (error) {
 				console.error(error);
 			}
@@ -18,7 +22,7 @@ export default function UserDashboardPage() {
 	return (
 		<>
 			<h1>Profile Page</h1>
-			<TransactionHistory />
+			<TransactionHistory txHistory={txHistory} />
 		</>
 	);
 }

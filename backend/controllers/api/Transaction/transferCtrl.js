@@ -38,11 +38,12 @@ const withdraw = async (req, res) => {
 
 const getHistory = async (req, res) => {
 	const { user_id } = req.user;
-	const query = `SELECT tt.tx_name, t.amount, t.date, f.fund_name, t.share_count
+	const query = `SELECT t.date, tt.tx_name, t.amount, f.fund_name, t.share_count
     FROM transactions t
     JOIN transaction_type tt ON t.tx_type_id = tt.tx_type_id
     LEFT JOIN fund f ON f.fund_id = t.fund_id
-    WHERE t.user_id = $1;`;
+    WHERE t.user_id = $1
+    ORDER BY t.date`;
 	try {
 		const data = await pool.query(query, [user_id]);
 		res.json(data.rows);
