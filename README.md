@@ -44,5 +44,9 @@ Try out FundRiser [here]().
 
 ## Future Developments
 
+- **Shifting of growth logic to backend**: Currently fundData is derived in the frontend, making updating very tricky.
+- **Standardise queries**:
+  1. Use node-pg Transaction for all DB queries that requires more than 1 query. (Only started doing that in the later half of my project)
+  2. Move queries into their own queries.js for modular sake
 - **ERD tables**: Finish the incomplete ERD tables in order to store periodic data based on date (Balance and share count of User)
-- **More detailed user analysis**: Using monthly balances create analysis and breakdown of user portfolio
+- **More detailed user analysis**: Using monthly balances create greater analysis and breakdown of user portfolio using dates
