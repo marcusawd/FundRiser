@@ -19,7 +19,7 @@ export default function TransfersPage() {
 		txHistory?.forEach((tx) => {
 			total += parseFloat(tx.amount);
 		});
-		setBalance(total);
+		setBalance(parseFloat(total).toFixed(2));
 	}, [txHistory]);
 
 	const handleFormSubmit = async (e) => {
@@ -33,10 +33,10 @@ export default function TransfersPage() {
 				throw new Error("Cannot deposit and withdraw at the same time");
 			} else if (deposit) {
 				const response = await depositFunds({ deposit });
-				setStatus({ ...status, success: response.message });
+				setStatus({ success: response.message, error: "" });
 			} else if (withdraw) {
 				const response = await withdrawFunds({ withdraw });
-				setStatus({ ...status, success: response.message });
+				setStatus({ success: response.message, error: "" });
 			}
 			setFetched(false);
 			e.target.reset();

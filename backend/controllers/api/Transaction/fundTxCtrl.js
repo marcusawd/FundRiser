@@ -27,7 +27,7 @@ const buyFund = async (req, res) => {
 	const amount = parseFloat(req.body.amount);
 	const client = await pool.connect();
 	try {
-		client.query("BEGIN");
+		await client.query("BEGIN");
 		const history = await client.query(getHistoryQuery, [user_id]);
 		const balance = calculateBalance(history.rows);
 		if (amount > balance) {
@@ -43,12 +43,12 @@ const buyFund = async (req, res) => {
 		res.json({
 			message: `${shareCount} shares of ${fundName} purchased for $${amount}`,
 		});
-		client.query("COMMIT");
+		await client.query("COMMIT");
 	} catch (error) {
 		if (error.message === "balance") {
-			res.status(400).json({ error: "Insufficient Balance" });
+			return res.status(400).json({ error: "Insufficient Balance" });
 		}
-		client.query("ROLLBACK");
+		await client.query("ROLLBACK");
 	} finally {
 		client.release();
 	}
@@ -61,7 +61,7 @@ const sellFund = async (req, res) => {
 	const amount = parseFloat(req.body.amount);
 	const client = await pool.connect();
 	try {
-		client.query("BEGIN");
+		await client.query("BEGIN");
 		const history = await client.query(getHistoryQuery, [user_id]);
 		const currentShares = calculateShares(history.rows);
 		if (currentShares < shareCount) {
@@ -77,12 +77,12 @@ const sellFund = async (req, res) => {
 		res.json({
 			message: `${shareCount} shares of ${fundName} sold for $${amount}`,
 		});
-		client.query("COMMIT");
+		await client.query("COMMIT");
 	} catch (error) {
 		if (error.message === "shares") {
-			res.status(400).json({ error: "Not enough shares to sell" });
+			return res.status(400).json({ error: "Not enough shares to sell" });
 		}
-		client.query("ROLLBACK");
+		await client.query("ROLLBACK");
 	} finally {
 		client.release();
 	}

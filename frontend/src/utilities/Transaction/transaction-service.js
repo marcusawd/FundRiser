@@ -6,8 +6,11 @@ export async function depositFunds(amount) {
 }
 
 export async function withdrawFunds(amount) {
-	const message = await transactionApi.withdrawFunds(amount);
-	return message;
+	const response = await transactionApi.withdrawFunds(amount);
+	if (response.error) {
+		throw new Error(response.error);
+	}
+	return response;
 }
 
 export async function buyFund(data) {
