@@ -4,8 +4,8 @@ import moment from "moment";
 export default function TransactionHistory({ txHistory }) {
 	return (
 		<>
-			<div>History list</div>
-			<div style={{ maxHeight: "280px", overflowY: "auto" }}>
+			<h3>Transaction History</h3>
+			<div style={{ maxHeight: "288px", overflowY: "auto" }}>
 				<Table bordered hover>
 					<thead>
 						<tr>

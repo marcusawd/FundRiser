@@ -1,37 +1,41 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../hooks/UserProvider";
+import { processPortfolioData } from "../../helper/processPortfolioData";
 import TransactionHistory from "../../components/Transaction/TransactionHistory";
 import PortfolioPieChart from "../../components/Charts/PortfolioPieChart";
+import { Col, Container, Row } from "react-bootstrap";
 
 export default function UserDashboardPage() {
 	const { txHistory } = useContext(UserContext);
+	const [balance, setBalance] = useState(0);
+	const [funds, setFunds] = useState({});
 
-	const data = txHistory?.reduce((acc, transaction) => {
-		const amount = parseFloat(transaction.amount);
-		if (transaction.fund_name !== null) {
-			if (!acc[transaction.fund_name]) {
-				acc[transaction.fund_name] = 0;
-			}
-			acc[transaction.fund_name] -= amount;
-			acc[transaction.fund_name] = parseFloat(
-				acc[transaction.fund_name].toFixed(2),
-			);
-		} else {
-			if (!acc["Cash Balance"]) {
-				acc["Cash Balance"] = 0;
-			}
-			acc["Cash Balance"] += amount;
-			acc["Cash Balance"] = parseFloat(acc["Cash Balance"].toFixed(2));
-		}
-		return acc;
-	}, {});
+	useEffect(() => {
+		let total = 0;
+		txHistory?.forEach((tx) => {
+			total += parseFloat(tx.amount);
+		});
+		setBalance(parseFloat(total).toFixed(2));
+		const filteredData = processPortfolioData(txHistory);
+		setFunds(filteredData);
+	}, [txHistory]);
 
-	console.log(data);
+	console.log(funds);
 
 	return (
 		<>
-			{/* <PortfolioPieChart txHistory={txHistory} /> */}
-			<TransactionHistory txHistory={txHistory} />
+			<h1 className="text-center">Cash Balance ${balance}</h1>
+			<br />
+			<Container>
+				<Row>
+					<Col>
+						<PortfolioPieChart balance={balance} funds={funds} />
+					</Col>
+					<Col>
+						<TransactionHistory txHistory={txHistory} />
+					</Col>
+				</Row>
+			</Container>
 		</>
 	);
 }

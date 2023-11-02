@@ -1,7 +1,28 @@
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
-export default function PortfolioPieChart({ txHistory }) {
+export default function PortfolioPieChart({ balance, funds }) {
 	const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
+	if (balance === null || funds === null) {
+		return <div>Loading...</div>;
+	}
+
+	let data = [];
+	if (balance !== undefined) {
+		data.push({ name: "Cash Balance", totalAmount: Number(balance) });
+	}
+	if (funds !== undefined) {
+		data = data.concat(
+			Object.keys(funds).map((key) => ({
+				name: key,
+				totalAmount: funds[key].totalAmount,
+				totalShares: funds[key].totalShares,
+				averagePricePaid: funds[key].averagePricePaid,
+			})),
+		);
+	}
+
+	console.log(data);
 
 	const CustomTooltip = ({ active, payload }) => {
 		if (active) {
@@ -13,9 +34,12 @@ export default function PortfolioPieChart({ txHistory }) {
 						padding: "5px",
 						border: "1px solid #ccc",
 					}}>
-					<p>{data.ticker}</p>
-					<p>Total Spent: {data.totalSpent}</p>
-					<p>Shares Owned: {data.totalQuantity}</p>
+					<p>{data.name}</p>
+					<p>Total Amount: {data.totalAmount}</p>
+					{data.totalShares && <p>Shares: {data.totalShares}</p>}
+					{data.averagePricePaid && (
+						<p>Average Price: {data.averagePricePaid}</p>
+					)}
 				</div>
 			);
 		}
@@ -26,8 +50,8 @@ export default function PortfolioPieChart({ txHistory }) {
 		<PieChart width={400} height={400}>
 			<Pie
 				data={data}
-				dataKey="totalSpent"
-				nameKey="ticker"
+				dataKey="totalAmount"
+				nameKey="name"
 				cx="50%"
 				cy="50%"
 				outerRadius={100}

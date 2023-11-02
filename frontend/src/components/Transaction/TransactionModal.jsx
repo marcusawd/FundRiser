@@ -28,11 +28,7 @@ export default function TransactionModal({
 		txHistory?.forEach((tx) => {
 			total += parseFloat(tx.amount);
 			if (tx.fund_name === fundName) {
-				if (tx.tx_name === "Buy Fund") {
-					count += tx.share_count;
-				} else if (tx.tx_name === "Sell Fund") {
-					count -= tx.share_count;
-				}
+				count += tx.share_count;
 			}
 		});
 		setBalance(parseFloat(total.toFixed(2)));
