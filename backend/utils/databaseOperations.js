@@ -12,13 +12,8 @@ const updateAllFundData = async () => {
 	const client = await pool.connect();
 	try {
 		await client.query("BEGIN");
-		const allFundLatestDates = await client.query(allFundLatestDateQuery);
-		allFundLatestDates.rows.forEach((item) => {
-			const date = moment(item.latest_date).format("YYYY-MM-DD");
-			item.latest_date = date;
-		});
 
-		console.log(allFundLatestDates.rows);
+		//! Grab tickerLatestDates, consume external api for new data, insert into DB for ALL tickers
 		const tickerNamesLatestDate = await client.query(
 			allUsedTickerLatestDateQuery,
 		);
@@ -26,7 +21,6 @@ const updateAllFundData = async () => {
 			const date = moment(item.latest_date).format("YYYY-MM-DD");
 			item.latest_date = date;
 		});
-		console.log(tickerNamesLatestDate.rows);
 
 		for (const item of tickerNamesLatestDate.rows) {
 			const tickerName = item.ticker_name;
@@ -39,7 +33,6 @@ const updateAllFundData = async () => {
 				const latestMoment = moment(latestDate);
 				return externalDate.isAfter(latestMoment);
 			});
-			console.log(filteredData);
 
 			for (const entry of filteredData) {
 				const [date, value] = entry;
@@ -47,6 +40,17 @@ const updateAllFundData = async () => {
 			}
 		}
 
+		//TODO Grab allStockData that is being utilised by funds, calculate their growth, grab weightage, calculate individual fund growth
+
+		//! Grabs latestDates of all funds
+
+		const allFundLatestDates = await client.query(allFundLatestDateQuery);
+		allFundLatestDates.rows.forEach((item) => {
+			const date = moment(item.latest_date).format("YYYY-MM-DD");
+			item.latest_date = date;
+		});
+
+		//TODO Filter only dates you need to insert, get the new fund price using fund growth, insert new fund price into each fund
 		await client.query("COMMIT");
 	} catch (error) {
 		console.log(error);
