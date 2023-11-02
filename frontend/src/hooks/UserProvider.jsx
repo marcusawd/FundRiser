@@ -12,30 +12,27 @@ export const UserProvider = ({ children }) => {
 	const [txHistory, setTxHistory] = useState(null);
 	const [fetched, setFetched] = useState(false);
 
-	const getUserFromToken = async () => {
-		const user = await getUser();
-		setUser(user);
-		log("Grabbing user data from token", user);
-	};
-
-	const fetchTransactionHistory = async () => {
-		try {
-			const data = await getHistory();
-			setTxHistory(data);
-			setFetched(true);
-			log("History of user grabbed");
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	useEffect(() => {
-		getUserFromToken();
-	}, []);
+		const getUserFromToken = async () => {
+			const fetchedUser = await getUser();
+			setUser(fetchedUser);
+			log("Grabbing user data from token", fetchedUser);
+		};
 
-	useEffect(() => {
 		if (user && user.role !== "admin" && !fetched) {
+			const fetchTransactionHistory = async () => {
+				try {
+					const data = await getHistory();
+					setTxHistory(data);
+					setFetched(true);
+					log("History of user grabbed");
+				} catch (error) {
+					console.error(error);
+				}
+			};
 			fetchTransactionHistory();
+		} else if (!user) {
+			getUserFromToken();
 		}
 	}, [user, fetched]);
 

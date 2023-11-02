@@ -33,13 +33,7 @@ export default function AdminNavBar({ user, handleLogout }) {
 				</NavDropdown.Item>
 			</NavDropdown>
 			<NavDropdown title="Your Account" id="basic-nav-dropdown">
-				<NavDropdown.Item
-					onClick={() => {
-						navigate("/");
-						handleLogout();
-					}}>
-					Sign Out
-				</NavDropdown.Item>
+				<NavDropdown.Item onClick={handleLogout}>Sign Out</NavDropdown.Item>
 			</NavDropdown>
 		</>
 	);

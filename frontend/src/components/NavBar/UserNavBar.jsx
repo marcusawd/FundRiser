@@ -15,9 +15,6 @@ export default function UserNavBar({ user, handleLogout }) {
 				<NavDropdown.Item onClick={() => navigate("/funds")}>
 					Fund List
 				</NavDropdown.Item>
-				{/* <NavDropdown.Item onClick={() => navigate("/courses/create")}>
-					Create A Course
-				</NavDropdown.Item> */}
 			</NavDropdown>
 			<NavDropdown title="Your Account" id="basic-nav-dropdown">
 				<NavDropdown.Item onClick={() => navigate("/dashboard")}>
@@ -28,13 +25,7 @@ export default function UserNavBar({ user, handleLogout }) {
 					Transfers
 				</NavDropdown.Item>
 				<NavDropdown.Divider />
-				<NavDropdown.Item
-					onClick={() => {
-						navigate("/");
-						handleLogout();
-					}}>
-					Sign Out
-				</NavDropdown.Item>
+				<NavDropdown.Item onClick={handleLogout}>Sign Out</NavDropdown.Item>
 			</NavDropdown>
 		</>
 	);

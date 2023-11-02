@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { logOut } from "../../utilities/User/users-service";
+import { checkToken, logOut } from "../../utilities/User/users-service";
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../hooks/UserProvider";
@@ -12,9 +12,10 @@ export default function NavBar() {
 	const navigate = useNavigate();
 	const { user, setUser } = useContext(UserContext);
 
-	const handleLogout = () => {
+	const handleLogout = async () => {
 		logOut();
 		setUser(null);
+		window.location.href = "/";
 	};
 
 	return (
