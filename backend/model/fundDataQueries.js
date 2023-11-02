@@ -1,3 +1,6 @@
+const allFundQuery =
+	"SELECT f.fund_name, f.description, fd.close_price, fd.date FROM fund_data fd JOIN fund f on f.fund_id = fd.fund_id ORDER BY fd.date";
+
 const allFundLatestDateQuery = `SELECT f.fund_name, MAX(fd.date) AS latest_date
 FROM fund_data fd
 JOIN fund f ON f.fund_id = fd.fund_id
@@ -13,4 +16,8 @@ JOIN (
 ON sd.ticker_id = t.ticker_id
 GROUP BY t.ticker_name;`;
 
-module.exports = { allFundLatestDateQuery, allUsedTickerLatestDateQuery };
+module.exports = {
+	allFundLatestDateQuery,
+	allUsedTickerLatestDateQuery,
+	allFundQuery,
+};
