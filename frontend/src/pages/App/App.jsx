@@ -1,8 +1,7 @@
 import debug from "debug";
-import { useContext, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Route, Routes } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
-import { AdminDashboardPage } from "../Admin/AdminDashboardPage";
 import LoginPage from "../AuthPage/LoginPage";
 import { UserContext } from "../../hooks/UserProvider";
 import UserDashboardPage from "../User/UserDashboardPage";
@@ -21,7 +20,6 @@ log("Start app");
 
 export default function App() {
 	const { user } = useContext(UserContext);
-	const navigate = useNavigate();
 	log(user);
 
 	return (
@@ -31,7 +29,6 @@ export default function App() {
 				<Routes>
 					{user && user.role === "admin" ? (
 						<>
-							<Route path="/admin" element={<AdminDashboardPage />}></Route>
 							<Route path="/admin/tickers" element={<AllTickersPage />} />
 							<Route path="/admin/fund/create" element={<CreateFundPage />} />
 						</>

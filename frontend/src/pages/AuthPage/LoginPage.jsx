@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import { login } from "../../utilities/User/users-service";
@@ -27,7 +27,7 @@ export default function LoginPage() {
 			const user = await login(credentials);
 			setUser(user);
 			if (user.role === "admin") {
-				navigate("/admin");
+				navigate("/admin/tickers");
 			} else {
 				navigate("/dashboard");
 			}
