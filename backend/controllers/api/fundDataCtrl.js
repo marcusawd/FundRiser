@@ -1,4 +1,5 @@
 const pool = require("../../config/database");
+const { allFundQuery } = require("../../model/fundDataQueries");
 const debug = require("debug")("backend:fundDataCtrl");
 
 const insertFundData = async (req, res) => {
@@ -30,10 +31,8 @@ const insertFundData = async (req, res) => {
 };
 
 const getAllFundData = async (req, res) => {
-	const query =
-		"SELECT f.fund_name, f.description, fd.close_price, fd.date FROM fund_data fd JOIN fund f on f.fund_id = fd.fund_id";
 	try {
-		const { rows } = await pool.query(query);
+		const { rows } = await pool.query(allFundQuery);
 		res.json(rows);
 	} catch (error) {
 		res.status(500).json({ error: "Internal Server Error" });

@@ -1,7 +1,7 @@
 //* import -> require
 require("dotenv").config();
 require("./config/database");
-// require("./utils/compoundScheduler");
+const updateAllFundData = require("./utils/databaseOperations");
 const express = require("express");
 const path = require("path");
 const logger = require("morgan");
@@ -16,6 +16,19 @@ const balanceRouter = require("./routes/api/balanceRoutes");
 const checkTokenMiddleware = require("./config/checkToken");
 const ensureUser = require("./config/ensureUser");
 const ensureAdmin = require("./config/ensureAdmin");
+const schedule = require("node-schedule");
+
+function performCompounding() {
+	const date = new Date();
+	debug("Compounding.. ", date);
+}
+
+// Every 10 minutes
+const compoundJob = schedule.scheduleJob("30 * * * * *", () => {
+	performCompounding();
+});
+
+// updateAllFundData();
 
 //* app
 const app = express();

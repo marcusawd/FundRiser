@@ -1,4 +1,5 @@
 const pool = require("../../config/database");
+const { insertStockDataQuery } = require("../../model/stockDataQueries");
 const alphaQuery = require("../../utils/alphaQuery");
 const debug = require("debug")("backend:stockDataCtrl");
 
@@ -17,11 +18,11 @@ const addTickerData = async (req, res) => {
 			const { rows } = await pool.query(checkQuery);
 			if (rows.length === 0) {
 				//* Data doesnt exist, insert it into table
-				const insertQuery = {
-					text: "INSERT INTO stock_data (ticker_id, date, close_price) VALUES ((SELECT ticker_id FROM ticker WHERE ticker_name = $1), $2, $3)",
-					values: [ticker, dateToInsert, entry[1]],
-				};
-				await pool.query(insertQuery);
+				await pool.query(insertStockDataQuery, [
+					ticker,
+					dateToInsert,
+					entry[1],
+				]);
 				count++;
 			}
 		}
