@@ -72,7 +72,7 @@ const sellFund = async (req, res) => {
 			TRANSACTION_NAME,
 			amount,
 			fundName,
-			shareCount,
+			-shareCount,
 		]);
 		res.json({
 			message: `${shareCount} shares of ${fundName} sold for $${amount}`,
