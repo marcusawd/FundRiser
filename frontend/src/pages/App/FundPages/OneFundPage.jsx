@@ -39,14 +39,16 @@ export default function OneFundPage() {
 			<h1>{fundName}</h1>
 			<StockChart data={fund} height={400} strokeColor="blue" />
 			{user ? (
-				<ButtonGroup aria-label="Basic example" onClick={handleClick}>
-					<Button variant="success" name="Buy">
-						Buy
-					</Button>
-					<Button variant="danger" name="Sell">
-						Sell
-					</Button>
-				</ButtonGroup>
+				user.role === "admin" ? null : (
+					<ButtonGroup aria-label="Basic example" onClick={handleClick}>
+						<Button variant="success" name="Buy">
+							Buy
+						</Button>
+						<Button variant="danger" name="Sell">
+							Sell
+						</Button>
+					</ButtonGroup>
+				)
 			) : (
 				<Button variant="warning" onClick={() => navigate("/login")}>
 					Login to trade
