@@ -20,15 +20,15 @@ const schedule = require("node-schedule");
 
 function performCompounding() {
 	const date = new Date();
+	// updateAllFundData();
 	debug("Compounding.. ", date);
 }
 
-// Every 10 minutes
+// Every time the clock strikes 00:30 seconds for example sake.
+//* When finalised, this should be running on the first day of every month
 const compoundJob = schedule.scheduleJob("30 * * * * *", () => {
 	performCompounding();
 });
-
-// updateAllFundData();
 
 //* app
 const app = express();
