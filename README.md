@@ -33,6 +33,7 @@ With a dedication to excellence and a commitment to secure and profitable invest
 - **Backend**: Node.js, Express.js
 - **Database**: PostgreSQL
 - **Other Technologies**: JsonWebToken, node-pg, Request, Moment, ReCharts
+- **External API**: Alpha Query stock Api
 
 ---
 
